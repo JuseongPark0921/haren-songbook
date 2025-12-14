@@ -11,8 +11,6 @@ covers:
     - url: https://www.youtube.com/watch?v=RZIsMGhBEko&list=RDRZIsMGhBEko&start_radio=1
 ---
 
-**데스노트**
-
 
 믿을 수가 없어 꿈을 꾸는걸까
 
