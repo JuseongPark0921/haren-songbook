@@ -99,63 +99,85 @@ export default function SongPage({ frontmatter, contentHtml }) {
       {/* 카드 영역 */}
       <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* 가사 카드 */}
-        <div className="
-          relative rounded-2xl
-          border border-purple-500/40
-          bg-gradient-to-b from-[#141c2f] to-[#0f1628]
-          h-[60vh] overflow-hidden
-        ">
+        <div
+          className="
+            relative
+            rounded-2xl
+            bg-white/70
+            backdrop-blur
+            border border-[#3b1d6a]/20
+            h-[65vh]
+            overflow-hidden
+          "
+        >
           <div className="absolute inset-0 p-6 overflow-y-auto">
             <div
-              className="prose prose-invert max-w-none leading-relaxed"
+                className="
+                prose
+                max-w-none
+                text-[#3b1d6a]
+                leading-loose
+                prose-p:my-2
+              "
               dangerouslySetInnerHTML={{ __html: contentHtml }}
             />
           </div>
         </div>
 
         {/* MR / Clip / Cover 카드 */}
-        <div className="
-          rounded-2xl
-          border border-purple-500/40
-          bg-gradient-to-b from-[#141c2f] to-[#0f1628]
-          h-[60vh]
-          flex flex-col justify-center
-          px-6
-        ">
+        <div
+          className="
+            rounded-2xl
+            bg-white/60
+            backdrop-blur
+            border border-[#3b1d6a]/20
+            h-[65vh]
+            flex flex-col
+            px-6 py-6
+          "
+        >
+
           {(clip || mr || (covers && covers.length > 0)) ? (
             <div className="space-y-4 w-full">
               {/* CLIP */}
               {clip && (
                 <a
-                  href={clip}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="
-                    block w-full px-4 py-3 rounded-xl
-                    bg-purple-600/20 text-purple-300
-                    hover:bg-purple-600/30 transition
-                    text-center
-                  "
-                >
-                  ▶ 클립 열기
-                </a>
+                href={clip}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="
+                  block w-full px-4 py-3 rounded-xl
+                  bg-purple-600/20 text-white
+                  hover:bg-purple-600/30 transition
+                  text-center
+                "
+              >
+                ▶ 클립 열기
+              </a>
+              
+              
+              
               )}
 
               {/* MR */}
               {mr && (
-                <a
+                  <a
                   href={mr}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="
                     block w-full px-4 py-3 rounded-xl
-                    bg-purple-600/20 text-purple-300
-                    hover:bg-purple-600/30 transition
+                    bg-[#6b4aa0]
+                    text-white
+                    hover:bg-[#59378f]
+                    transition
                     text-center
+                    text-sm
                   "
                 >
                   🎧 MR 열기
                 </a>
+                
               )}
 
               {/* Cover 섹션 */}
