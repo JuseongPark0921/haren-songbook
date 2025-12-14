@@ -8,7 +8,7 @@ const GENRES = [
   { key: "JPOP", label: "J-POP" },
   { key: "KPOP", label: "K-POP" },
   { key: "POP", label: "POP" },
-  { key: "MUSICAL", label: "뮤지컬·성악" }
+  { key: "뮤지컬/성악", label: "뮤지컬·성악" }
 ];
 
 export async function getStaticProps() {
