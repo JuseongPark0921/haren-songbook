@@ -139,80 +139,82 @@ export default function SongPage({ frontmatter, contentHtml }) {
             px-6 py-6
           "
         >
-          {(clip || mr || (covers && covers.length > 0)) ? (
-            <div className="space-y-4 w-full">
-              {/* CLIP */}
-              {clip && (
-                <a
-                  href={clip}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="
-                    block w-full px-4 py-3 rounded-xl
-                    bg-[#3b1d6a]/10 text-[#3b1d6a]
-                    hover:bg-[#3b1d6a]/20
-                    transition
-                    text-center
-                  "
-                >
-                  ▶ 클립 열기
-                </a>
-              )}
+          {/* 위쪽 콘텐츠 */}
+          <div className="flex-1 space-y-4 w-full">
+            {/* CLIP */}
+            {clip && (
+              <a
+                href={clip}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="
+                  block w-full px-4 py-3 rounded-xl
+                  bg-[#3b1d6a]/10 text-[#3b1d6a]
+                  hover:bg-[#3b1d6a]/20
+                  transition
+                  text-center
+                "
+              >
+                ▶ 클립 열기
+              </a>
+            )}
 
-              {/* MR */}
-              {mr && (
-                <a
-                  href={mr}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="
-                    block w-full px-4 py-3 rounded-xl
-                    bg-[#6b4aa0]
-                    text-white
-                    hover:bg-[#59378f]
-                    transition
-                    text-center
-                    text-sm
-                  "
-                >
-                  🎧 MR 열기
-                </a>
-              )}
+            {/* MR */}
+            {mr && (
+              <a
+                href={mr}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="
+                  block w-full px-4 py-3 rounded-xl
+                  bg-[#6b4aa0]
+                  text-white
+                  hover:bg-[#59378f]
+                  transition
+                  text-center
+                  text-sm
+                "
+              >
+                🎧 MR 열기
+              </a>
+            )}
 
-              {/* Cover 섹션 */}
-              {covers && covers.length > 0 && (
-                <div className="pt-3 border-t border-[#3b1d6a]/20">
-                  <div className="text-xs text-[#3b1d6a]/60 mb-2">
-                    🎤 Cover
-                  </div>
-
-                  <div className="space-y-2">
-                    {covers.map((cover, idx) => (
-                      <a
-                        key={idx}
-                        href={cover.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="
-                          block w-full px-4 py-2 rounded-lg
-                          bg-[#3b1d6a]/5 text-[#3b1d6a]
-                          hover:bg-[#3b1d6a]/10
-                          transition
-                          text-sm
-                        "
-                      >
-                        {cover.title || `Cover ${idx + 1}`}
-                      </a>
-                    ))}
-                  </div>
+            {/* Cover 섹션 */}
+            {covers && covers.length > 0 && (
+              <div className="pt-3 border-t border-[#3b1d6a]/20">
+                <div className="text-xs text-[#3b1d6a]/60 mb-2">
+                  🎤 Cover
                 </div>
-              )}
-            </div>
-          ) : (
-            <div className="flex flex-col items-center justify-center h-full text-center">
-              <div className="text-6xl mb-4">🎵</div>
 
-              <p className="text-[#3b1d6a]/60 mb-6">
+                <div className="space-y-2">
+                  {covers.map((cover, idx) => (
+                    <a
+                      key={idx}
+                      href={cover.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="
+                        block w-full px-4 py-2 rounded-lg
+                        bg-[#3b1d6a]/5 text-[#3b1d6a]
+                        hover:bg-[#3b1d6a]/10
+                        transition
+                        text-sm
+                      "
+                    >
+                      {cover.title || `Cover ${idx + 1}`}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* 🔽 항상 하단에 MR 검색 */}
+          <div className="pt-6 border-t border-[#3b1d6a]/20">
+            <div className="flex flex-col items-center text-center">
+              <div className="text-3xl mb-2">🎵</div>
+
+              <p className="text-sm text-[#3b1d6a]/60 mb-4">
                 MR 영상을 검색해보세요
               </p>
 
@@ -235,8 +237,9 @@ export default function SongPage({ frontmatter, contentHtml }) {
                 🔍 MR 검색하기
               </a>
             </div>
-          )}
+          </div>
         </div>
+
       </section>
     </main>
   );
