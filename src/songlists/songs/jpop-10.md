@@ -1,5 +1,5 @@
 ---
-title: 괴물(怪物, Monster)			
+title: 괴물(怪物, Monster)
 artist: YOASOBI
 genre: JPOP
 level: 

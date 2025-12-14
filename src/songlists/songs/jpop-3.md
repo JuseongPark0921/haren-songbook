@@ -1,5 +1,5 @@
 ---
-title:  うたたね (선잠)			
+title: うたたね (선잠)			
 artist: Leina (레이나)
 genre: JPOP
 level: 

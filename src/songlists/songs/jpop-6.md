@@ -1,5 +1,5 @@
 ---
-title: 逆光 (역광)			
+title: 逆光 (역광)
 artist: Ado
 genre: JPOP
 level: 
