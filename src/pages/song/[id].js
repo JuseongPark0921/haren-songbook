@@ -77,10 +77,10 @@ export default function SongPage({ frontmatter, contentHtml }) {
             {title}
           </h1>
 
-          <div className="flex items-center gap-3 text-sm text-gray-400">
+          <div className="flex items-center gap-3 text-sm text-[#3b1d6a]/60">
             <span>{artist}</span>
             {genre && (
-              <span className="px-3 py-1 rounded-full bg-pink-500/20 text-pink-400 text-xs">
+              <span className="px-3 py-1 rounded-full bg-pink-500/20 text-pink-600 text-xs">
                 {genre}
               </span>
             )}
@@ -90,7 +90,7 @@ export default function SongPage({ frontmatter, contentHtml }) {
         {/* 뒤로가기 버튼 */}
         <button
           onClick={() => router.back()}
-          className="text-sm text-gray-400 hover:text-white"
+          className="text-sm text-[#3b1d6a]/60 hover:text-[#3b1d6a]"
         >
           ← 뒤로가기
         </button>
@@ -103,9 +103,9 @@ export default function SongPage({ frontmatter, contentHtml }) {
           className="
             relative
             rounded-2xl
-            bg-white/70
-            backdrop-blur
-            border border-[#3b1d6a]/20
+            border
+            bg-white
+            border-[#3b1d6a]/20
             h-[65vh]
             overflow-hidden
           "
@@ -115,10 +115,13 @@ export default function SongPage({ frontmatter, contentHtml }) {
                 className="
                 prose
                 max-w-none
-                text-[#3b1d6a]
                 leading-loose
                 prose-p:my-2
+                text-[#3b1d6a]
+                prose-p:text-[#3b1d6a]
+                prose-headings:text-[#3b1d6a]
               "
+              
               dangerouslySetInnerHTML={{ __html: contentHtml }}
             />
           </div>
@@ -128,9 +131,9 @@ export default function SongPage({ frontmatter, contentHtml }) {
         <div
           className="
             rounded-2xl
-            bg-white/60
-            backdrop-blur
-            border border-[#3b1d6a]/20
+            border
+            bg-white
+            border-[#3b1d6a]/20
             h-[65vh]
             flex flex-col
             px-6 py-6
@@ -147,8 +150,9 @@ export default function SongPage({ frontmatter, contentHtml }) {
                 rel="noopener noreferrer"
                 className="
                   block w-full px-4 py-3 rounded-xl
-                  bg-purple-600/20 text-white
-                  hover:bg-purple-600/30 transition
+                  bg-[#3b1d6a]/10 text-[#3b1d6a]
+                  hover:bg-[#3b1d6a]/20
+                  transition
                   text-center
                 "
               >
@@ -182,8 +186,8 @@ export default function SongPage({ frontmatter, contentHtml }) {
 
               {/* Cover 섹션 */}
               {covers && covers.length > 0 && (
-                <div className="pt-3 border-t border-white/10">
-                  <div className="text-xs text-gray-400 mb-2">
+                <div className="pt-3 border-t border-[#3b1d6a]/20">
+                  <div className="text-xs text-[#3b1d6a]/60 mb-2">
                     🎤 Cover
                   </div>
 
@@ -196,8 +200,9 @@ export default function SongPage({ frontmatter, contentHtml }) {
                         rel="noopener noreferrer"
                         className="
                           block w-full px-4 py-2 rounded-lg
-                          bg-white/5 text-gray-200
-                          hover:bg-white/10 transition
+                          bg-[#3b1d6a]/5 text-[#3b1d6a]
+                          hover:bg-[#3b1d6a]/10
+                          transition
                           text-sm
                         "
                       >
@@ -211,7 +216,7 @@ export default function SongPage({ frontmatter, contentHtml }) {
           ) : (
             <>
               <div className="text-5xl mb-4 text-center">🎵</div>
-              <p className="text-gray-400 mb-4 text-center">
+              <p className="text-[#3b1d6a]/60 mb-4 text-center">
                 MR 영상을 검색해보세요
               </p>
               <a
@@ -223,9 +228,9 @@ export default function SongPage({ frontmatter, contentHtml }) {
                   mx-auto
                   px-5 py-3
                   rounded-full
-                  bg-purple-600
+                  bg-[#3b1d6a]
                   text-white
-                  hover:bg-purple-500
+                  hover:bg-[#2d1654]
                   transition
                 "
               >
@@ -238,4 +243,3 @@ export default function SongPage({ frontmatter, contentHtml }) {
     </main>
   );
 }
-
