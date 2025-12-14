@@ -15,7 +15,7 @@ I'm an Englishman in New York
 See me walking down Fifth Avenue  
 A walking cane here at my side  
 I take it everywhere I walk  
-I'm an Englishman in New York  
+I'm an Englishman in New York   
 Oh, I'm an alien, I'm a legal alien  
 I'm an Englishman in New York  
 Oh, I'm an alien, I'm a legal alien  
