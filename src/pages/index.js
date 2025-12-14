@@ -137,6 +137,10 @@ export default function Home({ songs }) {
               {song.artist}
             </div>
 
+            <div className="hidden sm:block w-32 text-sm text-[#3b1d6a]/60">
+              {song.level}
+            </div>
+
             <div className="hidden md:block w-24 text-right">
               <span className="inline-block px-3 py-1 text-xs rounded-full bg-pink-500/20 text-pink-600">
                 {song.genre}
