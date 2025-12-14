@@ -1,6 +1,6 @@
 ---
 title: 늘
-artist: Hebi. (해비)
+artist: Hebi. (헤비)
 genre: KPOP
 level: 
 note: 
