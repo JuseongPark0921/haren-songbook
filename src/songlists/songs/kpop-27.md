@@ -1,5 +1,5 @@
 ---
-title: pet(펫펫)
+title: pet(펫)
 artist: 10cm
 genre: KPOP
 level: 
