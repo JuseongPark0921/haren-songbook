@@ -1,5 +1,5 @@
 ---
-title: 'O sole mio
+title: O sole mio
 artist: 이탈리아 가곡
 genre: 뮤지컬/성악
 level: 
