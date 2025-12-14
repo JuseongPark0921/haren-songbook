@@ -139,33 +139,29 @@ export default function SongPage({ frontmatter, contentHtml }) {
             px-6 py-6
           "
         >
-
           {(clip || mr || (covers && covers.length > 0)) ? (
             <div className="space-y-4 w-full">
               {/* CLIP */}
               {clip && (
                 <a
-                href={clip}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="
-                  block w-full px-4 py-3 rounded-xl
-                  bg-[#3b1d6a]/10 text-[#3b1d6a]
-                  hover:bg-[#3b1d6a]/20
-                  transition
-                  text-center
-                "
-              >
-                ▶ 클립 열기
-              </a>
-              
-              
-              
+                  href={clip}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="
+                    block w-full px-4 py-3 rounded-xl
+                    bg-[#3b1d6a]/10 text-[#3b1d6a]
+                    hover:bg-[#3b1d6a]/20
+                    transition
+                    text-center
+                  "
+                >
+                  ▶ 클립 열기
+                </a>
               )}
 
               {/* MR */}
               {mr && (
-                  <a
+                <a
                   href={mr}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -181,7 +177,6 @@ export default function SongPage({ frontmatter, contentHtml }) {
                 >
                   🎧 MR 열기
                 </a>
-                
               )}
 
               {/* Cover 섹션 */}
@@ -214,29 +209,32 @@ export default function SongPage({ frontmatter, contentHtml }) {
               )}
             </div>
           ) : (
-            <>
-              <div className="text-5xl mb-4 text-center">🎵</div>
-              <p className="text-[#3b1d6a]/60 mb-4 text-center">
+            <div className="flex flex-col items-center justify-center h-full text-center">
+              <div className="text-6xl mb-4">🎵</div>
+
+              <p className="text-[#3b1d6a]/60 mb-6">
                 MR 영상을 검색해보세요
               </p>
+
               <a
                 href={`https://www.youtube.com/results?search_query=${encodeURIComponent(
                   `${title} MR`
                 )}`}
                 target="_blank"
+                rel="noopener noreferrer"
                 className="
-                  mx-auto
-                  px-5 py-3
+                  px-6 py-3
                   rounded-full
                   bg-[#3b1d6a]
                   text-white
                   hover:bg-[#2d1654]
                   transition
+                  flex items-center gap-2
                 "
               >
                 🔍 MR 검색하기
               </a>
-            </>
+            </div>
           )}
         </div>
       </section>
