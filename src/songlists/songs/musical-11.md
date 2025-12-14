@@ -7,7 +7,7 @@ note:
 mr: 
 clip: https://chzzk.naver.com/clips/tyPnUm6BFm
 covers:
- -url: https://youtu.be/TPbfRu23MPI
+ - url: https://youtu.be/TPbfRu23MPI
 ---
 
 한 걸음 두 걸음  

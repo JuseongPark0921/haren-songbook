@@ -7,7 +7,7 @@ note:
 mr: 
 clip: https://chzzk.naver.com/clips/wkz2s4ALOW
 covers:
-    -url: https://youtu.be/2rpUHvIT5eY
+    - url: https://youtu.be/2rpUHvIT5eY
 ---
 
 그게 나야  

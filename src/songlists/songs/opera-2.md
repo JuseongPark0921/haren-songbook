@@ -7,7 +7,7 @@ note:
 mr: 
 clip: 
 covers:
-    -url: https://youtu.be/Wo4RiMYwB6Q
+    - url: https://youtu.be/Wo4RiMYwB6Q
 ---
 
 Tu che di gel sei cinta,  
