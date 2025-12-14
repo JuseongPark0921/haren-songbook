@@ -44,7 +44,6 @@ export async function getStaticProps({ params }) {
   );
 
   const fileContent = fs.readFileSync(filePath, "utf-8");
-
   const { data, content } = matter(fileContent);
 
   const processedContent = await remark()
@@ -54,7 +53,8 @@ export async function getStaticProps({ params }) {
   return {
     props: {
       frontmatter: data,
-      contentHtml: processedContent.toString()
+      contentHtml: processedContent.toString(),
+      fileId: params.id
     }
   };
 }
@@ -64,7 +64,7 @@ export async function getStaticProps({ params }) {
  */
 import { useRouter } from "next/router";
 
-export default function SongPage({ frontmatter, contentHtml }) {
+export default function SongPage({ frontmatter, contentHtml, fileId }) {
   const router = useRouter();
   const { title, artist, genre, clip, mr, covers } = frontmatter ?? {};
 
@@ -73,9 +73,13 @@ export default function SongPage({ frontmatter, contentHtml }) {
       {/* 상단 헤더 */}
       <header className="flex items-start justify-between mb-6">
         <div>
-          <h1 className="font-serif text-3xl md:text-4xl mb-2">
-            {title}
-          </h1>
+        <h1 className="font-serif text-3xl md:text-4xl mb-2 flex items-baseline gap-3">
+          <span>{title}</span>
+          <span className="text-xs text-[#3b1d6a]/40 font-sans">
+            {fileId}
+          </span>
+        </h1>
+
 
           <div className="flex items-center gap-3 text-sm text-[#3b1d6a]/60">
             <span>{artist}</span>
