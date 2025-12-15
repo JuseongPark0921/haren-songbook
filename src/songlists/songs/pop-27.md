@@ -8,3 +8,77 @@ mr:
 clip: 
 ---
 
+Had to have high high hopes for a living  
+Shooting for the stars  
+When I couldn't make a killing  
+Didn't have a dime but I always had a vision  
+Always had high high hopes  
+Had to have high high hopes for a living  
+Didn't know how but I always had a feeling  
+I was gonna be that one in a million  
+Always had high high hopes  
+Mama said  
+Fulfill the prophecy  
+Be something greater  
+Go make a legacy  
+Manifest destiny  
+Back in the days  
+We wanted everything wanted everything  
+Mama said  
+Burn your biographies  
+Rewrite your history  
+Light up your wildest dreams  
+Museum victories everyday  
+We wanted everything wanted everything  
+Mama said don't give up  
+It's a little complicated  
+All tied up no more love  
+And I'd hate to see you waiting  
+Had to have high high hopes for a living  
+Shooting for the stars  
+When I couldn't make a killing  
+Didn't have a dime but I always had a vision  
+Always had high high hopes  
+Had to have high high hopes for a living  
+Didn't know how but I always had a feeling  
+I was gonna be that one in a million  
+Always had high high hopes  
+Mama said  
+It's uphill for oddities  
+The stranger crusaders  
+Ain't ever wannabes  
+The weird and the novelties  
+Don't ever change  
+We wanted everything wanted everything  
+Stay up on that rise  
+Stay up on that rise and never come down  
+Stay up on that rise  
+Stay up on that rise and never come down  
+Mama said don't give up  
+It's a little complicated  
+All tied up no more love  
+And I'd hate to see you waiting  
+They say it's all been done  
+But they haven't seen the best of me  
+So I got one more run  
+And it's gonna be a sight to see  
+Had to have high high hopes for a living  
+Shooting for the stars  
+When I couldn't make a killing  
+Didn't have a dime  
+But I always had a vision  
+Always had high high hopes  
+Had to have high high hopes for a living  
+Didn't know how but I always had a feeling  
+I was gonna be that one in a million  
+Always had high high hopes  
+Had to have high  
+High hopes for a living  
+Shooting for the stars  
+When I couldn't make a killing  
+Didn't have a dime but I always had a vision  
+Always had high high hopes  
+Had to have high high hopes for a living  
+Didn't know how but I always had a feeling  
+I was gonna be that one in a million  
+Always had high high hopes  
