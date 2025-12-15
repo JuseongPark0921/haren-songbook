@@ -2,6 +2,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { getAllSongs } from "../utils/getAllsongs";
 import { sortByArtistThenTitle } from "../utils/sortSongs";
+import { useRouter } from "next/router";
 
 const GENRES = [
   { key: "ALL", label: "전체" },
@@ -33,6 +34,13 @@ export default function Home({ songs }) {
     })
     .sort(sortByArtistThenTitle);
 
+  const router = useRouter();
+
+  const goRandomSong = () => {
+    const randomIndex = Math.floor(Math.random() * songs.length);
+    router.push(`/song/${songs[randomIndex].id}`);
+  };
+
   return (
     <main className="w-full max-w-screen-xl mx-auto px-6 py-16">
       {/* 헤더 */}
@@ -46,6 +54,23 @@ export default function Home({ songs }) {
         >
           Haren.R Songlist
         </h1>
+
+        <div className="flex justify-center mb-6">
+          <button
+            onClick={goRandomSong}
+            className="px-6 py-3 rounded-full
+            bg-[#3b1d6a]/10
+            text-white
+            text-sm
+            font-medium
+            hover:bg-[#2d1654]
+            transition
+            flex items-center gap-2
+            "
+          >
+            🎲Feel Lucky?
+          </button>
+        </div>
 
         <p className="text-sm text-[#3b1d6a]/60 mt-3">
           총 {songs.length}곡 · 선택된 곡 {filtered.length}곡
