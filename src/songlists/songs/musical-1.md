@@ -7,8 +7,11 @@ note: 여자키
 mr: 
 clip: https://chzzk.naver.com/clips/RSrXFWtDCs
 covers:
-    - url: https://www.youtube.com/watch?v=o41-pm1yJYU&list=RDo41-pm1yJYU&start_radio=1
-    - url: https://www.youtube.com/watch?v=RZIsMGhBEko&list=RDRZIsMGhBEko&start_radio=1
+    - title: 2025.7.31 노래뱅
+      url: https://www.youtube.com/watch?v=o41-pm1yJYU&list=RDo41-pm1yJYU&start_radio=1
+
+    - title: 뮤지컬 데스노트 - '데스노트' | Cover by 하렌 루베오스
+      url: https://www.youtube.com/watch?v=RZIsMGhBEko&list=RDRZIsMGhBEko&start_radio=1
 ---
 
 
