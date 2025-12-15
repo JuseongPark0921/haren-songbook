@@ -55,6 +55,54 @@ export default function Home({ songs }) {
           Haren.R Songlist
         </h1>
 
+        {/* 채널 링크 */}
+        <div className="flex justify-center mb-6">
+          <Link
+            href="https://chzzk.naver.com/11f9a14c3439b7b1ceadd819d61624da" 
+            target="_blank"
+            rel="noopener noreferrer"
+            className="
+              px-4 py-2
+              roundde-full
+              hover:bg-[#3b1d6a]/10
+              transition
+              flex items-center gap-2
+            "
+          >
+            <img src="/icons/chzzk-icon.png" alt="Chzzk" className="w-5 h-5" /> Live
+          </Link>
+
+          <Link
+            href="https://www.youtube.com/@haren_rubeos" 
+            target="_blank"
+            rel="noopener noreferrer"
+            className="
+              px-4 py-2
+              roundde-full
+              hover:bg-[#3b1d6a]/10
+              transition
+              flex items-center gap-2
+            "
+          >
+            <img src="/icons/youtube-icon.png" alt="Youtube" className="w-5 h-5" /> Channel
+          </Link>
+
+          <Link
+            href="https://cafe.naver.com/statopen" 
+            target="_blank"
+            rel="noopener noreferrer"
+            className="
+              px-4 py-2
+              roundde-full
+              hover:bg-[#3b1d6a]/10
+              transition
+              flex items-center gap-2
+            "
+          >
+            <img src="/icons/cafe-logo.webp" alt="Ncafe" className="w-5 h-5" /> Cafe
+          </Link>
+        </div>
+
         <div className="flex justify-center mb-6">
           <button
             onClick={goRandomSong}
