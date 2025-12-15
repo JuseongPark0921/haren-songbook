@@ -84,7 +84,7 @@ export default function Home({ songs }) {
               flex items-center gap-2
             "
           >
-            <img src="/icons/youtube-icon.png" alt="Youtube" className="w-5 h-5" /> Channel
+            <img src="/icons/youtube-icon.png" alt="Youtube" className="w-5 h-auto" /> Channel
           </Link>
 
           <Link
