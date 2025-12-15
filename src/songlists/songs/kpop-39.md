@@ -5,7 +5,7 @@ genre: KPOP
 level: 
 note: 
 mr: 
-clip: 
+clip: https://chzzk.naver.com/clips/ZnrsTcMP1A
 ---
 
 별빛이 흐르는 다리를 건너  

@@ -5,7 +5,7 @@ genre: KPOP
 level: 
 note: 
 mr: 
-clip: 
+clip: https://chzzk.naver.com/clips/3iqp23Hh8E
 ---
 
 남아있던 나를 떠나  

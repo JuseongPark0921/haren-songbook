@@ -5,7 +5,7 @@ genre: KPOP
 level: 
 note: 
 mr: 
-clip: 
+clip: https://chzzk.naver.com/clips/T5szL3PYSv
 ---
 
 한 시간마다 보고 싶다고 감정 없이 말하지 말아  

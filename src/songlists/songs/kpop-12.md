@@ -1,11 +1,11 @@
 ---
 title: 네모의 꿈
-artist: 화이트 (W.H.I.T.E)
+artist: 아이유 (원곡 W.H.I.T.E)
 genre: KPOP
 level: 
 note: 
 mr: 
-clip: 
+clip: https://chzzk.naver.com/clips/8rui4MkBQQ
 ---
 
 네모난 침대에서 일어나 눈을 떠 보면  

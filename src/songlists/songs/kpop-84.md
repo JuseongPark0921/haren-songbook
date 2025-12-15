@@ -5,7 +5,7 @@ genre: KPOP
 level: 
 note: 
 mr: 
-clip: 
+clip: https://chzzk.naver.com/clips/N19QC6O2yg
 ---
 
 Ha Ha Yeah BBC follow me  

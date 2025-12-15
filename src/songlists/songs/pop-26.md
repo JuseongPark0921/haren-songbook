@@ -5,7 +5,7 @@ genre: POP
 level: 
 note: 
 mr: 
-clip: 
+clip: https://chzzk.naver.com/clips/0L3btAUSkh
 ---
 
 For a while there, it was rough  

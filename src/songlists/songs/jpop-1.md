@@ -5,7 +5,7 @@ genre: JPOP
 level: hard
 note: 
 mr: https://www.youtube.com/watch?v=Gblii6_4DUU&list=RDGblii6_4DUU&start_radio=1
-clip: 
+clip: https://chzzk.naver.com/clips/I56O1bUrBw
 ---
 
 残酷な 天使のように  

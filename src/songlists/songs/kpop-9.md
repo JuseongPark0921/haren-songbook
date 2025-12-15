@@ -5,7 +5,7 @@ genre: KPOP
 level: 
 note: 
 mr: 
-clip: 
+clip: https://chzzk.naver.com/clips/MdUILvXduT
 ---
 
 Oh, oh, oh  

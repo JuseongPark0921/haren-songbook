@@ -5,7 +5,7 @@ genre: KPOP
 level: 
 note: 
 mr: 
-clip: 
+clip: https://chzzk.naver.com/clips/rLWLf8afJx
 ---
 
 너 없는 지금도 눈부신 하늘과  

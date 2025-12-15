@@ -5,7 +5,7 @@ genre: KPOP
 level: 
 note: 
 mr: 
-clip: 
+clip: https://chzzk.naver.com/clips/ccTIUqpH6p
 ---
 
 또 하루 멀어져 간다  

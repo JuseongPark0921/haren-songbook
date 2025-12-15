@@ -5,7 +5,7 @@ genre: KPOP
 level: 
 note: 
 mr: 
-clip: 
+clip: https://chzzk.naver.com/clips/zhqbDzjCr6
 ---
 
 난나-나나난나-난나나  

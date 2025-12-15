@@ -5,7 +5,7 @@ genre: KPOP
 level: 
 note: 
 mr: 
-clip: 
+clip: https://chzzk.naver.com/clips/5jSKyRsGd8
 ---
   
 삶이란 시련과 같은 말이야  

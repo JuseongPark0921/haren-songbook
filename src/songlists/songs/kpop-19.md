@@ -1,11 +1,17 @@
 ---
-title: 버스안에서
+title: 버스 안에서
 artist: 자자
 genre: KPOP
 level: 
 note: 
 mr: 
-clip: 
+clip: https://chzzk.naver.com/clips/OXiWPutL3v
+cover:
+    - title: 25.11.11 노래뱅
+      url: https://chzzk.naver.com/clips/J8F7OAO9kO
+    
+    - title: 25.09.07 탑골 노래뱅
+      url: https://chzzk.naver.com/clips/OXiWPutL3v
 ---
 
 아  

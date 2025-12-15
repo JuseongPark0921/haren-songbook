@@ -5,6 +5,6 @@ genre: JPOP
 level: 
 note: 
 mr: 
-clip: 
+clip: https://chzzk.naver.com/clips/R8fwnz1BvB
 ---
 

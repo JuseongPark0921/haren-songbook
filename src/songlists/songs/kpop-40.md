@@ -5,7 +5,7 @@ genre: KPOP
 level: 
 note: 
 mr: 
-clip: 
+clip: https://chzzk.naver.com/clips/oFYPHSwNmo
 ---
 
 비 내리는 호남선 남행열차에  

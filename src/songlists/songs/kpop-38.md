@@ -5,7 +5,7 @@ genre: KPOP
 level: 
 note: 
 mr: 
-clip: 
+clip: https://chzzk.naver.com/clips/fry2lGtRUL
 ---
 
 떠나려하네 저 강물 따라서  

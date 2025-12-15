@@ -5,7 +5,7 @@ genre: KPOP
 level: 
 note: 
 mr: 
-clip: 
+clip: https://chzzk.naver.com/clips/wfr6luO8FK
 ---
 
 사랑했었던 어떤 이가 떠나간 적 있겠죠  

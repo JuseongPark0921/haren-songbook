@@ -5,7 +5,7 @@ genre: KPOP
 level: 
 note: 
 mr: 
-clip: 
+clip: https://chzzk.naver.com/clips/WJHwkqMvxJ
 ---
 
 시작은 달콤하게 평범하게 나에게 끌려  

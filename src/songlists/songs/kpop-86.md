@@ -5,7 +5,7 @@ genre: KPOP
 level: 
 note: 
 mr: 
-clip: 
+clip: https://chzzk.naver.com/clips/XZk44K3kUV
 ---
 
 저 오빠들 이상해  

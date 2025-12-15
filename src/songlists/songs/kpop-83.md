@@ -5,7 +5,7 @@ genre: KPOP
 level: 
 note: 
 mr: 
-clip: 
+clip: https://chzzk.naver.com/clips/mpbJniMUdZ
 ---
 
 Jesus, 무슨 말이 필요해?  

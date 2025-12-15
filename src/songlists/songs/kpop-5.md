@@ -5,7 +5,12 @@ genre: KPOP
 level: 
 note: 
 mr: 
-clip: 
+clip: https://chzzk.naver.com/clips/zw4BIoD0zZ
+cover:
+    - title: 25.10.07 후후열노래뱅
+      url : https://chzzk.naver.com/clips/zw4BIoD0zZ
+    - title : 25.09.07 탑골노래뱅
+      url : https://chzzk.naver.com/clips/fSymyjszON
 ---
 
 오늘 밤 바라본 저 달이 너무 처량해  

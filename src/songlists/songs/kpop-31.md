@@ -5,7 +5,7 @@ genre: KPOP
 level: 
 note: 
 mr: 
-clip: 
+clip: https://chzzk.naver.com/clips/lla6IAOvms
 ---
 
 남들도 모르게 서성이다 울었지  

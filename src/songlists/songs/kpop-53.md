@@ -5,7 +5,7 @@ genre: KPOP
 level: 
 note: 
 mr: 
-clip: 
+clip: https://chzzk.naver.com/clips/KDoAwAatkc
 ---
 
 만나지 말잔 내 말 연락도 말란 내 말  

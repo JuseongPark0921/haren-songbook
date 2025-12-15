@@ -5,7 +5,7 @@ genre: KPOP
 level: 
 note: 
 mr: 
-clip: 
+clip: https://chzzk.naver.com/clips/BUkXJfOuXh
 ---
 
 믿을 수 있나요 나의 꿈 속에서  

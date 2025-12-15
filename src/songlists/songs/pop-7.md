@@ -5,7 +5,7 @@ genre: POP
 level: 
 note: 
 mr: 
-clip: 
+clip: https://chzzk.naver.com/clips/9sZsz4yzjI
 ---
 
 Remember the words you told me, love me 'til the day I die  

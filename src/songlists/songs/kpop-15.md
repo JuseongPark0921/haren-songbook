@@ -5,7 +5,7 @@ genre: KPOP
 level: 
 note: 
 mr: 
-clip: 
+clip: https://chzzk.naver.com/clips/mCu5kvQFWb
 ---
 
 나도 알아 나의 문제가 무엇인지  

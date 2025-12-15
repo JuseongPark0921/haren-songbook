@@ -5,7 +5,7 @@ genre: KPOP
 level: 
 note: 
 mr: 
-clip: 
+clip: https://chzzk.naver.com/clips/WyUAzp3VPQ
 ---
 
 이렇게 멋진 파란 하늘 위로  

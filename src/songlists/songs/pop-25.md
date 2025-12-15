@@ -5,7 +5,10 @@ genre: POP
 level:  
 note: 
 mr: 
-clip: 
+clip: https://chzzk.naver.com/clips/1PmhmVbm6W
+cover:
+    - title: 25.12.14 노래뱅 (어쿠스틱 버전)
+      url: https://chzzk.naver.com/clips/1PmhmVbm6W
 ---
 
 Fly me to the moon  

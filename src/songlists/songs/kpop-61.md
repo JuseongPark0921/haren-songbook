@@ -5,7 +5,7 @@ genre: KPOP
 level: 
 note: 
 mr: 
-clip: 
+clip: https://chzzk.naver.com/clips/FqwdehPe2C
 ---
 
 사실이 아니길 믿고 싶었어 널 놓치기 싫었어  

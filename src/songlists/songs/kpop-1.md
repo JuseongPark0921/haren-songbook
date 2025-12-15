@@ -5,7 +5,7 @@ genre: KPOP
 level: 
 note: 
 mr: 
-clip: 
+clip: https://chzzk.naver.com/clips/PMaIne3qox
 ---
 
 전례 없던 도전이면 선례 없인 불안하지

@@ -5,7 +5,7 @@ genre: KPOP
 level: 
 note: 
 mr: 
-clip: 
+clip: https://chzzk.naver.com/clips/1zUMSjbTwl
 ---
 
 어제는 하루 종일 비가 내렸어  

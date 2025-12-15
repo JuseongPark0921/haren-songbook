@@ -5,7 +5,7 @@ genre: KPOP
 level: 
 note: 
 mr: 
-clip: 
+clip: https://chzzk.naver.com/clips/l9OPEY0H5O
 ---
 
 생각이 많은 건 말이야  

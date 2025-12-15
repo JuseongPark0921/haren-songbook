@@ -5,7 +5,7 @@ genre: KPOP
 level: 
 note: 
 mr: 
-clip: 
+clip: https://chzzk.naver.com/clips/4eN917JmAH
 ---
 
 아무리 울어도 울어지지 않는 날에

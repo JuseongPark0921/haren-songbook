@@ -5,7 +5,7 @@ genre: KPOP
 level: 
 note: 
 mr: 
-clip: 
+clip: https://chzzk.naver.com/clips/7K6kEQFkXV
 ---
 
 바람 불어와 내 맘 흔들면  

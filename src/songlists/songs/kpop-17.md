@@ -5,7 +5,7 @@ genre: KPOP
 level: 
 note: 
 mr: 
-clip: 
+clip: https://chzzk.naver.com/clips/uGZnlIQ4aw
 ---
 
 다시 생각해봐  

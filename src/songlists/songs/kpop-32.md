@@ -5,7 +5,7 @@ genre: KPOP
 level: 
 note: 
 mr: 
-clip: 
+clip: https://chzzk.naver.com/clips/Zs9rYD9pg8
 ---
 
 잊어야 한다는 마음으로  

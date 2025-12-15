@@ -5,7 +5,10 @@ genre: KPOP
 level: 
 note: 디지몬 OST
 mr: 
-clip: 
+clip: https://chzzk.naver.com/clips/cPH4YzOUd3
+cover:
+    - title: 25.12.14 노래뱅
+      url: https://chzzk.naver.com/clips/akxIqqYJtz
 ---
 
 그래 그리 쉽지는 않겠지  

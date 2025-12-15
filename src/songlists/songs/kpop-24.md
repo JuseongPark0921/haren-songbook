@@ -5,7 +5,7 @@ genre: KPOP
 level: 
 note: 
 mr: 
-clip: 
+clip: https://chzzk.naver.com/clips/LmiMr67Ugy
 ---
 
 라일락 꽃향기 맡으면  

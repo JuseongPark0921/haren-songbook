@@ -5,7 +5,7 @@ genre: KPOP
 level: 
 note: 
 mr: 
-clip: 
+clip: https://chzzk.naver.com/clips/gvXkCrR6Bh
 ---
 
 사랑은 은하수 다방 문 앞에서 만나  

@@ -5,7 +5,7 @@ genre: KPOP
 level: 
 note: 
 mr: 
-clip: 
+clip: https://chzzk.naver.com/clips/GnoPkgZbkw
 ---
 
 이 밤 그날의 반딧불을 당신의  

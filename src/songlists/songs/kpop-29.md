@@ -5,7 +5,7 @@ genre: KPOP
 level: 
 note: 
 mr: 
-clip: 
+clip: https://chzzk.naver.com/clips/rTHBZHahqC
 ---
 
 바람에 날려 꽃이 지는 계절엔  
