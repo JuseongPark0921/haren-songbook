@@ -1,6 +1,7 @@
 {
   "date": "2025-06-04",
-  "embedUrl": "",
+  "platform": "youtube",
+  "embedUrl": "https://www.youtube.com/embed/mRR8WHW5jq8",
   "songs": [
     { "time": "TBD", "title": "Close to you" },
     { "time": "TBD", "title": "How do I say goodbye" },
