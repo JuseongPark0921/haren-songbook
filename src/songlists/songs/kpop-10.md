@@ -5,7 +5,10 @@ genre: KPOP
 level: 
 note: 
 mr: 
-clip: 
+clip: https://youtu.be/7mhlDZBejsY?si=Lk8G91LgJov9hwDy
+covers:
+    - title: 25.7.17 노래뱅(YT)
+      url: https://youtu.be/7mhlDZBejsY?si=Lk8G91LgJov9hwDy
 ---
 
 사랑이 왜 이리 고된가요  

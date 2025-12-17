@@ -7,6 +7,8 @@ note:
 mr: 
 clip: https://chzzk.naver.com/clips/D4UjAcvhTq
 covers:
+    - title: 레오펠 노래자랑
+      url: https://youtu.be/-ol_JUIRq0Q?si=fpfwmPouGe2DdvUk
 ---
 
 Quando me'n vò soletta per la via  

@@ -6,6 +6,9 @@ level:
 note: 
 mr: 
 clip: https://chzzk.naver.com/clips/iLIwYwk4a8
+covers:
+    - title: 25.9.7 노래뱅(YT)
+      url: https://youtu.be/bs4q79i9fvg?si=wiMXhz0-7j-0yIT5
 ---
 
 행복했어 너와의 시간들  

@@ -6,9 +6,12 @@ level:
 note: 
 mr: 
 clip: https://chzzk.naver.com/clips/1PmhmVbm6W
-cover:
+covers:
     - title: 25.12.14 노래뱅 (어쿠스틱 버전)
       url: https://chzzk.naver.com/clips/1PmhmVbm6W
+
+    - title: 25.05.13 노래뱅 (YT)
+      url: https://www.youtube.com/watch?v=T5c2as_AyX8&list=RDT5c2as_AyX8&start_radio=1
 ---
 
 Fly me to the moon  

@@ -1,7 +1,6 @@
 import { useState } from "react";
 import Link from "next/link";
 import { getAllSongs } from "../utils/getAllsongs";
-import { sortByArtistThenTitle } from "../utils/sortSongs";
 import { useRouter } from "next/router";
 
 const GENRES = [
@@ -20,19 +19,34 @@ export async function getStaticProps() {
 export default function Home({ songs }) {
   const [activeGenre, setActiveGenre] = useState("ALL");
   const [query, setQuery] = useState("");
+  const [sortKey, setSortKey] = useState("title"); // "title" | "artist"
+  const [sortOrder, setSortOrder] = useState("asc"); // "asc" | "desc"
 
-  const filtered = songs
-    .filter(song => {
+  const sortSongs = (songs) => {
+    return [...songs].sort((a, b) => {
+      const A = String(a[sortKey] ?? "").toLowerCase();
+      const B = String(b[sortKey] ?? "").toLowerCase();
+  
+      if (A < B) return sortOrder === "asc" ? -1 : 1;
+      if (A > B) return sortOrder === "asc" ? 1 : -1;
+      return 0;
+    });
+  };
+  
+  
+  const filtered = sortSongs(
+    songs.filter(song => {
       const matchGenre =
         activeGenre === "ALL" || song.genre === activeGenre;
-
+  
       const matchQuery = `${song.title} ${song.artist}`
         .toLowerCase()
         .includes(query.toLowerCase());
-
+  
       return matchGenre && matchQuery;
     })
-    .sort(sortByArtistThenTitle);
+  );
+
 
   const router = useRouter();
 
@@ -118,6 +132,21 @@ export default function Home({ songs }) {
           >
             🎲Feel Lucky?
           </button>
+
+          <Link
+            href="/Archive" 
+            className="px-6 py-3 rounded-full
+            bg-[#3b1d6a]/10
+            text-white
+            text-sm
+            font-medium
+            hover:bg-[#2d1654]
+            transition
+            flex items-center gap-2
+            "
+          >
+          📼 노래방 아카이브
+          </Link>
         </div>
 
         <p className="text-sm text-[#3b1d6a]/60 mt-3">
@@ -182,6 +211,69 @@ export default function Home({ songs }) {
 
 
       {/* 리스트 */}
+      {/* 리스트 헤더 */}
+      <div className="
+        border-b border-[#3b1d6a]/20
+        sticky top-0 z-10
+        bg-[#f4effc]
+      ">
+
+        <div className="flex items-center py-4 text-base font-medium text-[#3b1d6a]/70">
+
+          {/* 번호 */}
+          <div className="w-8 text-left">
+            #
+          </div>
+
+          {/* 제목 */}
+          <button
+            onClick={() => {
+              setSortKey("title");
+              setSortOrder(
+                sortKey === "title" && sortOrder === "asc" ? "desc" : "asc"
+              );
+            }}
+            className="flex-1 text-left hover:underline"
+          >
+            제목
+            {sortKey === "title" && (
+              <span className="ml-1">
+                {sortOrder === "asc" ? "▲" : "▼"}
+              </span>
+            )}
+          </button>
+
+          {/* 아티스트 */}
+          <button
+            onClick={() => {
+              setSortKey("artist");
+              setSortOrder(
+                sortKey === "artist" && sortOrder === "asc" ? "desc" : "asc"
+              );
+            }}
+            className="hidden sm:block w-64 text-left hover:underline"
+          >
+            아티스트
+            {sortKey === "artist" && (
+              <span className="ml-1">
+                {sortOrder === "asc" ? "▲" : "▼"}
+              </span>
+            )}
+          </button>
+
+          {/* 장르 */}
+          <div className="hidden md:block w-24 text-right">
+            장르
+          </div>
+
+          {/* 클립 */}
+          <div className="w-20 text-right">
+            클립
+          </div>
+
+        </div>
+      </div>
+
       <ul className="divide-y divide-[#3b1d6a]/10">
         {filtered.map((song, idx) => (
           <li

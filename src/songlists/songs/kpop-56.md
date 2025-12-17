@@ -6,6 +6,9 @@ level:
 note: 
 mr: 
 clip: 
+covers:
+    - title: 25.5.24 노래뱅(YT)
+      url: https://youtu.be/NZo3gyJNCVs?si=-TmzzcPYdPNpCkGT
 ---
 
 We all pretend to be the heroes  
