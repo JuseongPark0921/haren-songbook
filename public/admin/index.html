@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
+    <title>하렌 노래책 관리</title>
+    <style>
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, sans-serif;
+        background: #f6f3fb;
+        color: #3b1d6a;
+      }
+      #gate {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+      }
+      .card {
+        width: 100%;
+        max-width: 420px;
+        background: #fff;
+        border: 1px solid rgba(59, 29, 106, 0.15);
+        border-radius: 16px;
+        padding: 28px;
+        box-shadow: 0 8px 24px rgba(59, 29, 106, 0.08);
+      }
+      h1 {
+        margin: 0 0 8px;
+        font-size: 1.5rem;
+      }
+      p {
+        margin: 0 0 20px;
+        color: rgba(59, 29, 106, 0.65);
+        font-size: 0.95rem;
+        line-height: 1.5;
+      }
+      #gate label {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 0.9rem;
+        font-weight: 600;
+      }
+      #gate input {
+        width: 100%;
+        padding: 12px 14px;
+        border: 1px solid rgba(59, 29, 106, 0.2);
+        border-radius: 10px;
+        font-size: 1rem;
+        margin-bottom: 16px;
+      }
+      #gate button {
+        width: 100%;
+        padding: 12px 14px;
+        border: none;
+        border-radius: 10px;
+        font-size: 0.95rem;
+        cursor: pointer;
+      }
+      #submit {
+        background: #3b1d6a;
+        color: #fff;
+        margin-bottom: 12px;
+      }
+      #github-skip {
+        background: rgba(59, 29, 106, 0.08);
+        color: #3b1d6a;
+      }
+      #error {
+        color: #b42318;
+        font-size: 0.9rem;
+        min-height: 1.2em;
+        margin-bottom: 12px;
+      }
+      .note {
+        margin-top: 16px;
+        font-size: 0.85rem;
+        color: rgba(59, 29, 106, 0.55);
+      }
+      a {
+        color: #3b1d6a;
+      }
+
+      /* Decap CMS GitHub 로그인 버튼 — gate용 width:100% 상속 방지 */
+      #nc-root section button {
+        width: auto !important;
+        min-width: 200px;
+        max-width: 100%;
+        height: auto !important;
+        padding: 12px 28px !important;
+        font-size: 14px !important;
+        line-height: 1.4 !important;
+        white-space: nowrap;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="gate">
+      <div class="card">
+        <h1>노래책 관리</h1>
+        <p>노래책 CMS는 비밀번호 또는 GitHub 저장소 권한이 필요합니다.</p>
+        <label for="password">비밀번호</label>
+        <input id="password" type="password" autocomplete="current-password" />
+        <div id="error"></div>
+        <button id="submit" type="button">비밀번호로 입장</button>
+        <button id="github-skip" type="button">GitHub 로그인으로 계속</button>
+        <p class="note">
+          아카이브 로그인과 별개입니다. 노래방 아카이브 공개 수정:
+          <a href="/archive-admin">/archive-admin</a>
+        </p>
+      </div>
+    </div>
+
+    <script>
+      window.CMS_MANUAL_INIT = true;
+    </script>
+    <script src="https://unpkg.com/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
+    <script src="https://unpkg.com/decap-cms@3.3.3/dist/decap-cms.js"></script>
+    <script>
+      const AUTH_KEY = "cms_songs_auth";
+
+      function isLocalHost() {
+        return (
+          window.location.hostname === "localhost" ||
+          window.location.hostname === "127.0.0.1"
+        );
+      }
+
+      function clearCmsAuth() {
+        for (const key of Object.keys(localStorage)) {
+          if (
+            key.includes("decap-cms") ||
+            key.includes("netlify-cms") ||
+            key.includes("github")
+          ) {
+            localStorage.removeItem(key);
+          }
+        }
+      }
+
+      function configureSongsBackend(config) {
+        const scopeOrigin = `${window.location.origin}/admin`;
+        config.site_url = scopeOrigin;
+        config.backend.base_url = scopeOrigin;
+        config.backend.auth_endpoint = `${window.location.origin}/api/auth`;
+      }
+
+      async function initCms() {
+        clearCmsAuth();
+        document.getElementById("gate").style.display = "none";
+
+        const response = await fetch("/admin/config.yml");
+        const configText = await response.text();
+        const config = jsyaml.load(configText);
+
+        if (isLocalHost()) {
+          config.local_backend = {
+            url: "http://localhost:8081/api/v1",
+          };
+        } else {
+          configureSongsBackend(config);
+        }
+
+        CMS.init({ config });
+      }
+
+      function grantAccess(mode) {
+        sessionStorage.setItem(AUTH_KEY, mode);
+        initCms();
+      }
+
+      document.getElementById("submit").addEventListener("click", async () => {
+        const errorEl = document.getElementById("error");
+        errorEl.textContent = "";
+
+        const password = document.getElementById("password").value;
+
+        try {
+          const response = await fetch("/api/cms-songs-gate", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ password }),
+          });
+
+          if (response.ok) {
+            grantAccess("password");
+            return;
+          }
+
+          errorEl.textContent = "비밀번호가 올바르지 않습니다.";
+        } catch {
+          errorEl.textContent = "인증 요청에 실패했습니다.";
+        }
+      });
+
+      document.getElementById("github-skip").addEventListener("click", () => {
+        grantAccess("github");
+      });
+
+      document.addEventListener("DOMContentLoaded", () => {
+        if (sessionStorage.getItem(AUTH_KEY)) {
+          initCms();
+        }
+      });
+    </script>
+  </body>
+</html>
