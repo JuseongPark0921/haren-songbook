@@ -26,6 +26,17 @@
       #notice strong {
         color: #3b1d6a;
       }
+
+      #nc-root section button {
+        width: auto !important;
+        min-width: 200px;
+        max-width: 100%;
+        height: auto !important;
+        padding: 12px 28px !important;
+        font-size: 14px !important;
+        line-height: 1.4 !important;
+        white-space: nowrap;
+      }
     </style>
   </head>
   <body>
@@ -34,6 +45,7 @@
       GitHub 개인 계정 없이 바로 수정할 수 있습니다. 노래책은
       <a href="/admin">/admin</a>에서 별도 관리합니다.
     </div>
+    <div id="nc-root"></div>
 
     <script>
       window.CMS_MANUAL_INIT = true;
@@ -43,12 +55,31 @@
     <script>
       const ARCHIVE_ADMIN_PATH = "/archive-admin";
       const REPO = "JuseongPark0921/haren-songbook";
+      const AUTH_ENDPOINT = "/api/archive/auth";
+      const TOKEN_HINT =
+        "Vercel에 GITHUB_CMS_TOKEN(또는 GITHUB_ARCHIVE_TOKEN)을 설정한 뒤 재배포하세요.";
 
       function isLocalHost() {
         return (
           window.location.hostname === "localhost" ||
           window.location.hostname === "127.0.0.1"
         );
+      }
+
+      function onReady(callback) {
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", callback);
+        } else {
+          callback();
+        }
+      }
+
+      function ensureHashRoute() {
+        if (!window.location.hash || window.location.hash === "#") {
+          window.location.replace(
+            window.location.pathname + window.location.search + "#/"
+          );
+        }
       }
 
       function clearCmsAuth() {
@@ -67,7 +98,7 @@
         const scopeOrigin = `${window.location.origin}${ARCHIVE_ADMIN_PATH}`;
         config.site_url = scopeOrigin;
         config.backend.base_url = scopeOrigin;
-        config.backend.auth_endpoint = `${window.location.origin}/api/archive/auth`;
+        config.backend.auth_endpoint = `${window.location.origin}${AUTH_ENDPOINT}`;
       }
 
       function storeArchiveSession(user) {
@@ -96,13 +127,12 @@
           throw new Error("bootstrap failed");
         }
 
-        const user = await response.json();
-        storeArchiveSession(user);
+        storeArchiveSession(await response.json());
       }
 
       function waitForCmsReady() {
         return new Promise((resolve, reject) => {
-          const deadline = Date.now() + 12000;
+          const deadline = Date.now() + 20000;
 
           const timer = setInterval(() => {
             const root = document.getElementById("nc-root");
@@ -110,7 +140,8 @@
 
             if (
               root.querySelector("a[href*='collections']") ||
-              root.querySelector("[class*='CollectionMain']")
+              root.querySelector("[class*='CollectionMain']") ||
+              root.querySelector("[class*='AppMainContainer']")
             ) {
               clearInterval(timer);
               resolve("ready");
@@ -132,13 +163,46 @@
         });
       }
 
-      document.addEventListener("DOMContentLoaded", async function () {
+      function openAuthPopup() {
+        const width = 600;
+        const height = 720;
+        const left = window.screenX + Math.max(0, (window.outerWidth - width) / 2);
+        const top = window.screenY + Math.max(0, (window.outerHeight - height) / 2);
+
+        return window.open(
+          `${window.location.origin}${AUTH_ENDPOINT}`,
+          "cms_auth",
+          `width=${width},height=${height},left=${left},top=${top},scrollbars=yes`
+        );
+      }
+
+      async function authenticateArchive(notice) {
+        let state = await waitForCmsReady();
+
+        if (state === "ready") {
+          return true;
+        }
+
+        const popup = openAuthPopup();
+        if (!popup) {
+          notice.textContent =
+            "팝업이 차단되었습니다. 브라우저에서 팝업을 허용한 뒤 다시 시도하세요.";
+          return false;
+        }
+
+        state = await waitForCmsReady();
+        popup.close();
+        return state === "ready";
+      }
+
+      async function startArchiveAdmin() {
+        ensureHashRoute();
+
         const notice = document.getElementById("notice");
         clearCmsAuth();
 
         const response = await fetch(`${ARCHIVE_ADMIN_PATH}/config.yml`);
-        const configText = await response.text();
-        const config = jsyaml.load(configText);
+        const config = jsyaml.load(await response.text());
 
         if (isLocalHost()) {
           config.local_backend = {
@@ -151,9 +215,7 @@
           try {
             await bootstrapArchiveAuth();
           } catch {
-            notice.textContent =
-              "연결에 실패했습니다. GITHUB_ARCHIVE_TOKEN 설정을 확인하세요.";
-            return;
+            // bootstrap 실패 시 CMS init 후 auth popup으로 재시도
           }
         }
 
@@ -161,15 +223,13 @@
 
         if (!isLocalHost()) {
           try {
-            const state = await waitForCmsReady();
-            if (state === "login") {
-              const loginBtn = document.querySelector("#nc-root button");
-              loginBtn?.click();
-              await waitForCmsReady();
+            const ok = await authenticateArchive(notice);
+            if (!ok) {
+              notice.textContent = `연결에 실패했습니다. ${TOKEN_HINT}`;
+              return;
             }
           } catch {
-            notice.textContent =
-              "CMS 로드에 실패했습니다. 페이지를 새로고침해 주세요.";
+            notice.textContent = `연결에 실패했습니다. ${TOKEN_HINT}`;
             return;
           }
         }
@@ -178,6 +238,13 @@
           "<strong>노래방 아카이브 전용 수정 페이지입니다.</strong> " +
           "GitHub 개인 계정 없이 바로 수정할 수 있습니다. 노래책은 " +
           '<a href="/admin">/admin</a>에서 별도 관리합니다.';
+      }
+
+      onReady(function () {
+        startArchiveAdmin().catch(function () {
+          document.getElementById("notice").textContent =
+            `CMS를 불러오지 못했습니다. ${TOKEN_HINT}`;
+        });
       });
     </script>
   </body>

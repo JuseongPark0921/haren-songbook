@@ -1,24 +1,20 @@
+import { getSongsGithubToken, isAllowedCmsOrigin } from "../../../lib/cmsGithubToken";
+
 export default function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const token = process.env.GITHUB_SONGS_TOKEN;
+  const token = getSongsGithubToken();
 
   if (!token) {
-    return res.status(500).json({ error: "GITHUB_SONGS_TOKEN is not configured" });
+    return res.status(500).json({
+      error:
+        "GitHub token is not configured. Set GITHUB_SONGS_TOKEN or GITHUB_CMS_TOKEN on Vercel.",
+    });
   }
 
-  const origin = req.headers.origin || "";
-  const host = req.headers.host || "";
-
-  const allowed =
-    origin.includes("localhost") ||
-    origin.includes("127.0.0.1") ||
-    host.includes("haren-songbook.vercel.app") ||
-    host.includes("localhost");
-
-  if (!allowed) {
+  if (!isAllowedCmsOrigin(req)) {
     return res.status(403).json({ error: "Forbidden" });
   }
 
