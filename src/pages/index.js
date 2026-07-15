@@ -57,6 +57,22 @@ export default function Home({ songs }) {
 
   return (
     <main className="w-full max-w-screen-xl mx-auto px-6 py-16">
+      <div className="flex items-center justify-end gap-4 mb-4">
+        <Link
+          href="/admin"
+          className="
+            inline-flex items-center gap-2
+            px-4 py-2 rounded-full
+            text-sm font-medium
+            bg-[#3b1d6a]/10 text-[#3b1d6a]
+            hover:bg-[#3b1d6a]/20
+            transition
+          "
+        >
+          ✏️ 곡 관리
+        </Link>
+      </div>
+
       {/* 헤더 */}
       <header className="relative mb-10 text-center">
         <h1
@@ -146,21 +162,6 @@ export default function Home({ songs }) {
             "
           >
           📼 노래방 아카이브
-          </Link>
-
-          <Link
-            href="/admin"
-            className="px-6 py-3 rounded-full
-            bg-[#3b1d6a]/10
-            text-[#3b1d6a]
-            text-sm
-            font-medium
-            hover:bg-[#3b1d6a]/20
-            transition
-            flex items-center gap-2
-            "
-          >
-            ✏️ 곡 추가 (관리자전용)
           </Link>
         </div>
 

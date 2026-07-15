@@ -19,6 +19,30 @@
         font-size: 0.9rem;
         line-height: 1.5;
       }
+      #notice .notice-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 6px;
+      }
+      #notice .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: 999px;
+        background: rgba(59, 29, 106, 0.1);
+        color: #3b1d6a;
+        font-weight: 600;
+        text-decoration: none;
+        font-size: 0.85rem;
+        white-space: nowrap;
+      }
+      #notice .back-link:hover {
+        background: rgba(59, 29, 106, 0.18);
+      }
       #notice a {
         color: #3b1d6a;
         font-weight: 600;
@@ -40,6 +64,9 @@
   </head>
   <body>
     <div id="notice">
+      <div class="notice-row">
+        <a href="/" class="back-link">← 노래책으로 돌아가기</a>
+      </div>
       <strong>노래방 아카이브 전용 수정 페이지입니다.</strong>
       GitHub 개인 계정 없이 바로 수정할 수 있습니다. 노래책은
       <a href="/admin">/admin</a>에서 별도 관리합니다.
@@ -52,6 +79,12 @@
     <script src="https://unpkg.com/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
     <script src="https://unpkg.com/decap-cms@3.3.3/dist/decap-cms.js"></script>
     <script>
+      const NOTICE_READY_HTML =
+        '<div class="notice-row"><a href="/" class="back-link">← 노래책으로 돌아가기</a></div>' +
+        "<strong>노래방 아카이브 전용 수정 페이지입니다.</strong> " +
+        "GitHub 개인 계정 없이 바로 수정할 수 있습니다. 노래책은 " +
+        '<a href="/admin">/admin</a>에서 별도 관리합니다.';
+
       const ADMIN_PATH = "/archive-admin";
       const AUTH_PATH = "archive-admin/auth";
 
@@ -195,10 +228,7 @@
           }
         }
 
-        notice.innerHTML =
-          "<strong>노래방 아카이브 전용 수정 페이지입니다.</strong> " +
-          "GitHub 개인 계정 없이 바로 수정할 수 있습니다. 노래책은 " +
-          '<a href="/admin">/admin</a>에서 별도 관리합니다.';
+        notice.innerHTML = NOTICE_READY_HTML;
       }
 
       onReady(function () {
