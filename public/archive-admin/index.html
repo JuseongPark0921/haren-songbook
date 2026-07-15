@@ -105,7 +105,9 @@
 
       function ensureHashRoute() {
         if (!window.location.hash || window.location.hash === "#") {
-          window.location.replace(
+          history.replaceState(
+            null,
+            "",
             window.location.pathname + window.location.search + "#/"
           );
         }
@@ -175,6 +177,28 @@
         });
       }
 
+      function waitForGithubAuthSuccess(timeoutMs) {
+        return new Promise((resolve, reject) => {
+          const timer = setTimeout(() => {
+            window.removeEventListener("message", onMessage);
+            reject(new Error("auth timeout"));
+          }, timeoutMs);
+
+          function onMessage(event) {
+            if (
+              typeof event.data === "string" &&
+              event.data.indexOf("authorization:github:success:") === 0
+            ) {
+              clearTimeout(timer);
+              window.removeEventListener("message", onMessage);
+              resolve(true);
+            }
+          }
+
+          window.addEventListener("message", onMessage);
+        });
+      }
+
       function triggerCmsLogin() {
         const loginBtn = document.querySelector("#nc-root button");
         if (!loginBtn) return false;
@@ -183,8 +207,10 @@
       }
 
       async function authenticateCms(notice) {
-        let state = await waitForCmsReady(30000);
+        let state = await waitForCmsReady(10000);
         if (state === "ready") return true;
+
+        const authSuccess = waitForGithubAuthSuccess(30000);
 
         if (!triggerCmsLogin()) {
           notice.textContent = "CMS 로그인 버튼을 찾지 못했습니다.";
@@ -192,7 +218,9 @@
         }
 
         try {
-          state = await waitForCmsReady(30000);
+          await authSuccess;
+          await new Promise((resolve) => setTimeout(resolve, 400));
+          state = await waitForCmsReady(20000);
           return state === "ready";
         } catch {
           return false;
@@ -223,7 +251,7 @@
           const ok = await authenticateCms(notice);
           if (!ok) {
             notice.textContent =
-              "CMS 인증에 실패했습니다. 팝업이 닫힌 뒤 새로고침해 주세요.";
+              "CMS 인증에 실패했습니다. 잠시 후 다시 시도해 주세요.";
             return;
           }
         }

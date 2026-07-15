@@ -11,7 +11,7 @@ export default function handler(req, res) {
 
   const { password } = req.body ?? {};
 
-  if (password === expected) {
+  if (String(password ?? "").trim() === String(expected).trim()) {
     return res.status(200).json({ ok: true });
   }
 
