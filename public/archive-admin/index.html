@@ -5,6 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex" />
     <title>노래방 아카이브 관리</title>
+    <script>
+      if (!window.location.hash || window.location.hash === "#") {
+        history.replaceState(
+          null,
+          "",
+          window.location.pathname + window.location.search + "#/"
+        );
+      }
+      window.CMS_MANUAL_INIT = true;
+    </script>
     <style>
       body {
         margin: 0;
@@ -18,6 +28,11 @@
         border-bottom: 1px solid rgba(59, 29, 106, 0.12);
         font-size: 0.9rem;
         line-height: 1.5;
+      }
+      #status {
+        display: block;
+        margin: 0;
+        color: rgba(59, 29, 106, 0.75);
       }
       #notice .notice-row {
         display: flex;
@@ -67,26 +82,22 @@
       <div class="notice-row">
         <a href="/" class="back-link">← 노래책으로 돌아가기</a>
       </div>
-      <strong>노래방 아카이브 전용 수정 페이지입니다.</strong>
-      GitHub 개인 계정 없이 바로 수정할 수 있습니다. 노래책은
-      <a href="/admin">/admin</a>에서 별도 관리합니다.
+      <p id="status"></p>
+      <p>
+        <strong>노래방 아카이브 전용 수정 페이지입니다.</strong>
+        GitHub 개인 계정 없이 바로 수정할 수 있습니다. 노래책은
+        <a href="/admin">/admin</a>에서 별도 관리합니다.
+      </p>
     </div>
     <div id="nc-root"></div>
 
-    <script>
-      window.CMS_MANUAL_INIT = true;
-    </script>
     <script src="https://unpkg.com/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
     <script src="https://unpkg.com/decap-cms@3.3.3/dist/decap-cms.js"></script>
     <script>
-      const NOTICE_READY_HTML =
-        '<div class="notice-row"><a href="/" class="back-link">← 노래책으로 돌아가기</a></div>' +
-        "<strong>노래방 아카이브 전용 수정 페이지입니다.</strong> " +
-        "GitHub 개인 계정 없이 바로 수정할 수 있습니다. 노래책은 " +
-        '<a href="/admin">/admin</a>에서 별도 관리합니다.';
-
       const ADMIN_PATH = "/archive-admin";
       const AUTH_PATH = "archive-admin/auth";
+      let cmsInitialized = false;
+      let cmsStarting = false;
 
       function isLocalHost() {
         return (
@@ -95,22 +106,17 @@
         );
       }
 
-      function onReady(callback) {
-        if (document.readyState === "loading") {
-          document.addEventListener("DOMContentLoaded", callback);
-        } else {
-          callback();
-        }
+      function setStatus(message) {
+        const status = document.getElementById("status");
+        if (status) status.textContent = message || "";
       }
 
-      function ensureHashRoute() {
-        if (!window.location.hash || window.location.hash === "#") {
-          history.replaceState(
-            null,
-            "",
-            window.location.pathname + window.location.search + "#/"
-          );
-        }
+      function nextFrame() {
+        return new Promise((resolve) => requestAnimationFrame(resolve));
+      }
+
+      function sleep(ms) {
+        return new Promise((resolve) => setTimeout(resolve, ms));
       }
 
       function clearCmsAuth() {
@@ -132,21 +138,12 @@
       }
 
       function isCmsAuthenticated(root) {
-        if (
+        return Boolean(
           root.querySelector("a[href*='collections']") ||
-          root.querySelector("[class*='CollectionMain']") ||
-          root.querySelector("[class*='AppMainContainer']") ||
-          root.querySelector("[class*='Sidebar']") ||
-          root.querySelector("nav")
-        ) {
-          return true;
-        }
-
-        const loginBtn = root.querySelector("button");
-        return (
-          !loginBtn &&
-          root.children.length > 0 &&
-          root.textContent.trim().length > 20
+            root.querySelector("[class*='CollectionMain']") ||
+            root.querySelector("[class*='AppMainContainer']") ||
+            root.querySelector("[class*='Sidebar']") ||
+            root.querySelector("nav")
         );
       }
 
@@ -206,20 +203,19 @@
         return true;
       }
 
-      async function authenticateCms(notice) {
-        let state = await waitForCmsReady(10000);
+      async function authenticateCms() {
+        let state = await waitForCmsReady(12000);
         if (state === "ready") return true;
 
         const authSuccess = waitForGithubAuthSuccess(30000);
-
         if (!triggerCmsLogin()) {
-          notice.textContent = "CMS 로그인 버튼을 찾지 못했습니다.";
+          setStatus("CMS 로그인 버튼을 찾지 못했습니다.");
           return false;
         }
 
         try {
           await authSuccess;
-          await new Promise((resolve) => setTimeout(resolve, 400));
+          await sleep(800);
           state = await waitForCmsReady(20000);
           return state === "ready";
         } catch {
@@ -228,41 +224,55 @@
       }
 
       async function startAdmin() {
-        ensureHashRoute();
+        if (cmsInitialized || cmsStarting) return;
+        cmsStarting = true;
 
-        const notice = document.getElementById("notice");
-        clearCmsAuth();
+        try {
+          setStatus("CMS를 불러오는 중...");
 
-        const response = await fetch(`${ADMIN_PATH}/config.yml`);
-        if (!response.ok) throw new Error("config load failed");
+          const response = await fetch(`${ADMIN_PATH}/config.yml`);
+          if (!response.ok) throw new Error("config load failed");
 
-        const config = jsyaml.load(await response.text());
+          const config = jsyaml.load(await response.text());
 
-        if (isLocalHost()) {
-          config.local_backend = { url: "http://localhost:8081/api/v1" };
-        } else {
-          configureBackend(config);
-          notice.textContent = "저장소에 연결 중... 잠시만 기다려 주세요.";
-        }
-
-        CMS.init({ config });
-
-        if (!isLocalHost()) {
-          const ok = await authenticateCms(notice);
-          if (!ok) {
-            notice.textContent =
-              "CMS 인증에 실패했습니다. 잠시 후 다시 시도해 주세요.";
-            return;
+          if (isLocalHost()) {
+            config.local_backend = { url: "http://localhost:8081/api/v1" };
+          } else {
+            configureBackend(config);
+            clearCmsAuth();
+            setStatus("저장소에 연결 중... 잠시만 기다려 주세요.");
           }
-        }
 
-        notice.innerHTML = NOTICE_READY_HTML;
+          await nextFrame();
+          await nextFrame();
+
+          CMS.init({ config });
+          cmsInitialized = true;
+          cmsStarting = false;
+
+          await sleep(400);
+
+          if (!isLocalHost()) {
+            const ok = await authenticateCms();
+            if (!ok) {
+              cmsInitialized = false;
+              setStatus("CMS 인증에 실패했습니다. 페이지를 새로고침해 주세요.");
+              return;
+            }
+          }
+
+          setStatus("");
+        } catch (error) {
+          cmsInitialized = false;
+          cmsStarting = false;
+          setStatus("CMS를 불러오지 못했습니다. 페이지를 새로고침해 주세요.");
+          throw error;
+        }
       }
 
-      onReady(function () {
+      document.addEventListener("DOMContentLoaded", function () {
         startAdmin().catch(function () {
-          document.getElementById("notice").textContent =
-            "CMS를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.";
+          setStatus("CMS를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.");
         });
       });
     </script>
