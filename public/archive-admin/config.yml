@@ -6,6 +6,9 @@ backend:
 
 locale: ko
 
+media_folder: public/uploads
+public_folder: /uploads
+
 collections:
   - name: archive
     label: 노래방 아카이브
