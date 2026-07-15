@@ -1,0 +1,21 @@
+import { renderGithubTokenPage } from "../../lib/cmsAuthHtml";
+import { getArchiveGithubToken } from "../../lib/cmsGithubToken";
+
+export async function getServerSideProps({ res }) {
+  const token = getArchiveGithubToken();
+
+  if (!token) {
+    res.statusCode = 500;
+    res.end(
+      "GitHub token is not configured. Set GITHUB_CMS_TOKEN on Vercel Production."
+    );
+    return { props: {} };
+  }
+
+  renderGithubTokenPage(res, token);
+  return { props: {} };
+}
+
+export default function ArchiveAdminAuthPage() {
+  return null;
+}

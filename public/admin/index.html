@@ -53,11 +53,8 @@
     <script src="https://unpkg.com/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
     <script src="https://unpkg.com/decap-cms@3.3.3/dist/decap-cms.js"></script>
     <script>
-      const SONGS_ADMIN_PATH = "/admin";
-      const REPO = "JuseongPark0921/haren-songbook";
-      const AUTH_ENDPOINT = "/api/songs/auth";
-      const TOKEN_HINT =
-        "Vercel에 GITHUB_CMS_TOKEN(또는 GITHUB_SONGS_TOKEN)을 설정한 뒤 재배포하세요.";
+      const ADMIN_PATH = "/admin";
+      const AUTH_PATH = "/admin/auth";
 
       function isLocalHost() {
         return (
@@ -94,45 +91,15 @@
         }
       }
 
-      function configureSongsBackend(config) {
-        const scopeOrigin = `${window.location.origin}${SONGS_ADMIN_PATH}`;
-        config.site_url = scopeOrigin;
-        config.backend.base_url = scopeOrigin;
-        config.backend.auth_endpoint = `${window.location.origin}${AUTH_ENDPOINT}`;
-      }
-
-      function storeSongsSession(user) {
-        const payload = JSON.stringify({
-          token: user.token,
-          provider: "github",
-          login: user.login,
-          name: user.name,
-        });
-
-        localStorage.setItem("netlify-cms-user", payload);
-        localStorage.setItem(`decap-cms-git-github-token:${REPO}`, user.token);
-        localStorage.setItem(
-          `decap-cms-git-github-user:${REPO}`,
-          JSON.stringify(user)
-        );
-      }
-
-      async function bootstrapSongsAuth() {
-        const response = await fetch("/api/songs/bootstrap", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-        });
-
-        if (!response.ok) {
-          throw new Error("bootstrap failed");
-        }
-
-        storeSongsSession(await response.json());
+      function configureBackend(config) {
+        config.site_url = `${window.location.origin}${ADMIN_PATH}`;
+        config.backend.base_url = window.location.origin;
+        config.backend.auth_endpoint = AUTH_PATH;
       }
 
       function waitForCmsReady() {
         return new Promise((resolve, reject) => {
-          const deadline = Date.now() + 20000;
+          const deadline = Date.now() + 30000;
 
           const timer = setInterval(() => {
             const root = document.getElementById("nc-root");
@@ -141,7 +108,8 @@
             if (
               root.querySelector("a[href*='collections']") ||
               root.querySelector("[class*='CollectionMain']") ||
-              root.querySelector("[class*='AppMainContainer']")
+              root.querySelector("[class*='AppMainContainer']") ||
+              root.querySelector("[class*='Sidebar']")
             ) {
               clearInterval(timer);
               resolve("ready");
@@ -163,45 +131,41 @@
         });
       }
 
-      function openAuthPopup() {
-        const width = 600;
-        const height = 720;
-        const left = window.screenX + Math.max(0, (window.outerWidth - width) / 2);
-        const top = window.screenY + Math.max(0, (window.outerHeight - height) / 2);
-
-        return window.open(
-          `${window.location.origin}${AUTH_ENDPOINT}`,
-          "cms_auth",
-          `width=${width},height=${height},left=${left},top=${top},scrollbars=yes`
-        );
+      function triggerCmsLogin() {
+        const loginBtn = document.querySelector("#nc-root button");
+        if (loginBtn) {
+          loginBtn.click();
+          return true;
+        }
+        return false;
       }
 
-      async function authenticateSongs(notice) {
+      async function authenticateCms(notice) {
         let state = await waitForCmsReady();
-
         if (state === "ready") {
           return true;
         }
 
-        const popup = openAuthPopup();
-        if (!popup) {
-          notice.textContent =
-            "팝업이 차단되었습니다. 브라우저에서 팝업을 허용한 뒤 다시 시도하세요.";
+        if (!triggerCmsLogin()) {
+          notice.textContent = "CMS 로그인 버튼을 찾지 못했습니다. 새로고침해 주세요.";
           return false;
         }
 
         state = await waitForCmsReady();
-        popup.close();
         return state === "ready";
       }
 
-      async function startSongsAdmin() {
+      async function startAdmin() {
         ensureHashRoute();
 
         const notice = document.getElementById("notice");
         clearCmsAuth();
 
-        const response = await fetch(`${SONGS_ADMIN_PATH}/config.yml`);
+        const response = await fetch(`${ADMIN_PATH}/config.yml`);
+        if (!response.ok) {
+          throw new Error("config load failed");
+        }
+
         const config = jsyaml.load(await response.text());
 
         if (isLocalHost()) {
@@ -209,27 +173,23 @@
             url: "http://localhost:8081/api/v1",
           };
         } else {
-          configureSongsBackend(config);
+          configureBackend(config);
           notice.textContent = "저장소에 연결 중... (GitHub 계정 불필요)";
-
-          try {
-            await bootstrapSongsAuth();
-          } catch {
-            // bootstrap 실패 시 CMS init 후 auth popup으로 재시도
-          }
         }
 
         CMS.init({ config });
 
         if (!isLocalHost()) {
           try {
-            const ok = await authenticateSongs(notice);
+            const ok = await authenticateCms(notice);
             if (!ok) {
-              notice.textContent = `연결에 실패했습니다. ${TOKEN_HINT}`;
+              notice.textContent =
+                "CMS 인증에 실패했습니다. 팝업 차단을 해제하거나 페이지를 새로고침해 주세요.";
               return;
             }
           } catch {
-            notice.textContent = `연결에 실패했습니다. ${TOKEN_HINT}`;
+            notice.textContent =
+              "CMS 로드 시간이 초과되었습니다. 페이지를 새로고침해 주세요.";
             return;
           }
         }
@@ -241,9 +201,9 @@
       }
 
       onReady(function () {
-        startSongsAdmin().catch(function () {
+        startAdmin().catch(function () {
           document.getElementById("notice").textContent =
-            `CMS를 불러오지 못했습니다. ${TOKEN_HINT}`;
+            "CMS를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.";
         });
       });
     </script>

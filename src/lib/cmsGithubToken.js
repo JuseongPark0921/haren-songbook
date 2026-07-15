@@ -1,18 +1,22 @@
+function normalizeToken(value) {
+  if (!value) return null;
+  const trimmed = String(value).trim();
+  return trimmed || null;
+}
+
 export function getSongsGithubToken() {
-  return (
+  return normalizeToken(
     process.env.GITHUB_SONGS_TOKEN ||
-    process.env.GITHUB_CMS_TOKEN ||
-    process.env.GITHUB_TOKEN ||
-    null
+      process.env.GITHUB_CMS_TOKEN ||
+      process.env.GITHUB_TOKEN
   );
 }
 
 export function getArchiveGithubToken() {
-  return (
+  return normalizeToken(
     process.env.GITHUB_ARCHIVE_TOKEN ||
-    process.env.GITHUB_CMS_TOKEN ||
-    process.env.GITHUB_TOKEN ||
-    null
+      process.env.GITHUB_CMS_TOKEN ||
+      process.env.GITHUB_TOKEN
   );
 }
 
