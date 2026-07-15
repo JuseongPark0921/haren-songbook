@@ -75,6 +75,17 @@
         line-height: 1.4 !important;
         white-space: nowrap;
       }
+
+      /* Decap 상단 바 숨김: 콘텐츠 / 미디어 / 빠른 추가 */
+      #nc-root [class*="AppHeader"],
+      #nc-root [class*="AppHeaderContainer"],
+      #nc-root > div > div > header,
+      #nc-root a[href*="/media"],
+      #nc-root a[href*="collections/media"],
+      #nc-root [class*="QuickNew"],
+      #nc-root [class*="SpeedDial"] {
+        display: none !important;
+      }
     </style>
   </head>
   <body>
