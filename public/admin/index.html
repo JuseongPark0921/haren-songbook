@@ -26,7 +26,6 @@
       #notice strong {
         color: #3b1d6a;
       }
-
       #nc-root section button {
         width: auto !important;
         min-width: 200px;
@@ -54,7 +53,7 @@
     <script src="https://unpkg.com/decap-cms@3.3.3/dist/decap-cms.js"></script>
     <script>
       const ADMIN_PATH = "/admin";
-      const AUTH_PATH = "/admin/auth";
+      const AUTH_PATH = "admin/auth";
 
       function isLocalHost() {
         return (
@@ -97,27 +96,39 @@
         config.backend.auth_endpoint = AUTH_PATH;
       }
 
-      function waitForCmsReady() {
-        return new Promise((resolve, reject) => {
-          const deadline = Date.now() + 30000;
+      function isCmsAuthenticated(root) {
+        if (
+          root.querySelector("a[href*='collections']") ||
+          root.querySelector("[class*='CollectionMain']") ||
+          root.querySelector("[class*='AppMainContainer']") ||
+          root.querySelector("[class*='Sidebar']") ||
+          root.querySelector("nav")
+        ) {
+          return true;
+        }
 
+        const loginBtn = root.querySelector("button");
+        return (
+          !loginBtn &&
+          root.children.length > 0 &&
+          root.textContent.trim().length > 20
+        );
+      }
+
+      function waitForCmsReady(timeoutMs) {
+        return new Promise((resolve, reject) => {
+          const deadline = Date.now() + timeoutMs;
           const timer = setInterval(() => {
             const root = document.getElementById("nc-root");
             if (!root) return;
 
-            if (
-              root.querySelector("a[href*='collections']") ||
-              root.querySelector("[class*='CollectionMain']") ||
-              root.querySelector("[class*='AppMainContainer']") ||
-              root.querySelector("[class*='Sidebar']")
-            ) {
+            if (isCmsAuthenticated(root)) {
               clearInterval(timer);
               resolve("ready");
               return;
             }
 
-            const loginBtn = root.querySelector("button");
-            if (loginBtn) {
+            if (root.querySelector("button")) {
               clearInterval(timer);
               resolve("login");
               return;
@@ -133,26 +144,26 @@
 
       function triggerCmsLogin() {
         const loginBtn = document.querySelector("#nc-root button");
-        if (loginBtn) {
-          loginBtn.click();
-          return true;
-        }
-        return false;
+        if (!loginBtn) return false;
+        loginBtn.click();
+        return true;
       }
 
       async function authenticateCms(notice) {
-        let state = await waitForCmsReady();
-        if (state === "ready") {
-          return true;
-        }
+        let state = await waitForCmsReady(30000);
+        if (state === "ready") return true;
 
         if (!triggerCmsLogin()) {
-          notice.textContent = "CMS 로그인 버튼을 찾지 못했습니다. 새로고침해 주세요.";
+          notice.textContent = "CMS 로그인 버튼을 찾지 못했습니다.";
           return false;
         }
 
-        state = await waitForCmsReady();
-        return state === "ready";
+        try {
+          state = await waitForCmsReady(30000);
+          return state === "ready";
+        } catch {
+          return false;
+        }
       }
 
       async function startAdmin() {
@@ -162,34 +173,24 @@
         clearCmsAuth();
 
         const response = await fetch(`${ADMIN_PATH}/config.yml`);
-        if (!response.ok) {
-          throw new Error("config load failed");
-        }
+        if (!response.ok) throw new Error("config load failed");
 
         const config = jsyaml.load(await response.text());
 
         if (isLocalHost()) {
-          config.local_backend = {
-            url: "http://localhost:8081/api/v1",
-          };
+          config.local_backend = { url: "http://localhost:8081/api/v1" };
         } else {
           configureBackend(config);
-          notice.textContent = "저장소에 연결 중... (GitHub 계정 불필요)";
+          notice.textContent = "저장소에 연결 중... 잠시만 기다려 주세요.";
         }
 
         CMS.init({ config });
 
         if (!isLocalHost()) {
-          try {
-            const ok = await authenticateCms(notice);
-            if (!ok) {
-              notice.textContent =
-                "CMS 인증에 실패했습니다. 팝업 차단을 해제하거나 페이지를 새로고침해 주세요.";
-              return;
-            }
-          } catch {
+          const ok = await authenticateCms(notice);
+          if (!ok) {
             notice.textContent =
-              "CMS 로드 시간이 초과되었습니다. 페이지를 새로고침해 주세요.";
+              "CMS 인증에 실패했습니다. 팝업이 닫힌 뒤 새로고침해 주세요.";
             return;
           }
         }

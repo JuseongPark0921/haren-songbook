@@ -14,29 +14,27 @@ function renderGithubTokenPage(res, token) {
     <script>
       (function () {
         const payload = ${JSON.stringify(authPayload)};
-        const message = "authorization:github:success:" + payload;
+        const target = window.location.origin;
 
-        function notifyOpener() {
-          if (!window.opener) return false;
-          window.opener.postMessage(message, window.location.origin);
-          return true;
-        }
-
-        if (notifyOpener()) {
-          window.close();
-          return;
-        }
-
-        function receiveMessage() {
-          if (notifyOpener()) {
-            window.removeEventListener("message", receiveMessage, false);
+        function completeAuth() {
+          const message = "authorization:github:success:" + payload;
+          if (window.opener) {
+            window.opener.postMessage(message, target);
             window.close();
           }
         }
 
-        window.addEventListener("message", receiveMessage, false);
+        function onParentReply(event) {
+          if (event.origin !== target) return;
+          if (event.data !== "authorizing:github") return;
+          window.removeEventListener("message", onParentReply, false);
+          completeAuth();
+        }
+
+        window.addEventListener("message", onParentReply, false);
+
         if (window.opener) {
-          window.opener.postMessage("authorizing:github", window.location.origin);
+          window.opener.postMessage("authorizing:github", target);
         }
       })();
     </script>
