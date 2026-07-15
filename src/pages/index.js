@@ -117,7 +117,7 @@ export default function Home({ songs }) {
           </Link>
         </div>
 
-        <div className="flex justify-center mb-6">
+        <div className="flex flex-wrap justify-center gap-3 mb-6">
           <button
             onClick={goRandomSong}
             className="px-6 py-3 rounded-full
@@ -146,6 +146,21 @@ export default function Home({ songs }) {
             "
           >
           📼 노래방 아카이브
+          </Link>
+
+          <Link
+            href="/admin"
+            className="px-6 py-3 rounded-full
+            bg-[#3b1d6a]/10
+            text-[#3b1d6a]
+            text-sm
+            font-medium
+            hover:bg-[#3b1d6a]/20
+            transition
+            flex items-center gap-2
+            "
+          >
+            ✏️ 곡 추가 (관리자전용)
           </Link>
         </div>
 
