@@ -42,6 +42,27 @@ collections:
         required: false
         hint: "아카이브 목록에 표시되는 방송 제목. 비워두면 archive-index.json 또는 날짜가 표시됩니다."
 
+      - label: 멤버
+        name: members
+        widget: list
+        required: true
+        default:
+          - haren
+        min: 1
+        summary: "{{fields.member}}"
+        field:
+          label: 멤버
+          name: member
+          widget: select
+          options:
+            - label: 센 카르멘
+              value: sen
+            - label: 니르
+              value: nir
+            - label: 하렌 루베오스
+              value: haren
+        hint: "여러 멤버가 함께한 방송은 멤버를 여러 명 추가하세요. 기존 파일에 이 값이 없으면 하렌으로 처리됩니다."
+
       - label: 플랫폼
         name: platform
         widget: select

@@ -3,6 +3,7 @@ import path from "path";
 import matter from "gray-matter";
 import { remark } from "remark";
 import html from "remark-html";
+import { getMemberLabels, normalizeMembers } from "../../lib/members";
 
 /**
  * 어떤 id 페이지를 만들지 Next.js에게 알려줌
@@ -52,7 +53,10 @@ export async function getStaticProps({ params }) {
 
   return {
     props: {
-      frontmatter: data,
+      frontmatter: {
+        ...data,
+        members: normalizeMembers(data.members ?? data.member)
+      },
       contentHtml: processedContent.toString(),
       fileId: params.id
     }
@@ -67,6 +71,7 @@ import { useRouter } from "next/router";
 export default function SongPage({ frontmatter, contentHtml, fileId }) {
   const router = useRouter();
   const { title, artist, genre, clip, mr, covers } = frontmatter ?? {};
+  const memberLabels = getMemberLabels(frontmatter);
 
   return (
     <main className="w-full max-w-screen-2xl mx-auto px-6 py-8">
@@ -83,6 +88,14 @@ export default function SongPage({ frontmatter, contentHtml, fileId }) {
 
           <div className="flex items-center gap-3 text-sm text-[#3b1d6a]/60">
             <span>{artist}</span>
+            {memberLabels.map(label => (
+              <span
+                key={label}
+                className="px-3 py-1 rounded-full bg-[#3b1d6a]/10 text-[#3b1d6a] text-xs"
+              >
+                {label}
+              </span>
+            ))}
             {genre && (
               <span className="px-3 py-1 rounded-full bg-pink-500/20 text-pink-600 text-xs">
                 {genre}

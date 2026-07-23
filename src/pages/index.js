@@ -2,6 +2,11 @@ import { useState } from "react";
 import Link from "next/link";
 import { getAllSongs } from "../utils/getAllsongs";
 import { useRouter } from "next/router";
+import {
+  MEMBER_FILTERS,
+  getMemberLabels,
+  matchesMemberFilter,
+} from "../lib/members";
 
 const GENRES = [
   { key: "ALL", label: "전체" },
@@ -17,6 +22,7 @@ export async function getStaticProps() {
 }
 
 export default function Home({ songs }) {
+  const [activeMember, setActiveMember] = useState("ALL");
   const [activeGenre, setActiveGenre] = useState("ALL");
   const [query, setQuery] = useState("");
   const [sortKey, setSortKey] = useState("title"); // "title" | "artist"
@@ -36,6 +42,8 @@ export default function Home({ songs }) {
   
   const filtered = sortSongs(
     songs.filter(song => {
+      const matchMember = matchesMemberFilter(song, activeMember);
+
       const matchGenre =
         activeGenre === "ALL" || song.genre === activeGenre;
   
@@ -43,7 +51,7 @@ export default function Home({ songs }) {
         .toLowerCase()
         .includes(query.toLowerCase());
   
-      return matchGenre && matchQuery;
+      return matchMember && matchGenre && matchQuery;
     })
   );
 
@@ -193,6 +201,38 @@ export default function Home({ songs }) {
 
       </div>
 
+      {/* 멤버 탭 */}
+      <div className="flex flex-wrap gap-2 justify-center mb-4">
+        {MEMBER_FILTERS.map(member => {
+          const active = activeMember === member.key;
+          return (
+            <button
+              key={member.key}
+              onClick={() => setActiveMember(member.key)}
+              className={`
+                px-4 py-2
+                rounded-full
+                text-sm
+                font-medium
+                transition
+
+                ${
+                  active
+                    ? "bg-[#3b1d6a] text-white"
+                    : `
+                      bg-white text-[#3b1d6a]
+                      border border-[#3b1d6a]/30
+                      hover:bg-[#f1ecfb]
+                    `
+                }
+              `}
+            >
+              {member.label}
+            </button>
+          );
+        })}
+      </div>
+
       {/* 장르 탭 */}
       <div className="flex flex-wrap gap-2 justify-center mb-12">
         {GENRES.map(g => {
@@ -312,6 +352,16 @@ export default function Home({ songs }) {
                   {song.title}
                 </span>
               </Link>
+              <div className="mt-1 flex flex-wrap gap-1">
+                {getMemberLabels(song).map(label => (
+                  <span
+                    key={label}
+                    className="inline-block px-2 py-0.5 text-[11px] rounded-full bg-[#3b1d6a]/10 text-[#3b1d6a]/70"
+                  >
+                    {label}
+                  </span>
+                ))}
+              </div>
             </div>
 
             <div className="hidden sm:block w-32 text-sm text-[#3b1d6a]/60">

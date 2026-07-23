@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
+import { normalizeMembers } from "../lib/members";
 
 const SONG_DIR = path.join(
   process.cwd(),
@@ -22,7 +23,8 @@ export function getAllSongs() {
 
       return {
         id,
-        ...data
+        ...data,
+        members: normalizeMembers(data.members ?? data.member)
       };
     });
 }

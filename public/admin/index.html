@@ -228,6 +228,17 @@
         }
       }
 
+      async function fetchCmsBranch() {
+        try {
+          const response = await fetch("/api/cms-branch");
+          if (!response.ok) throw new Error("branch load failed");
+          const data = await response.json();
+          return data.branch || "main";
+        } catch {
+          return null;
+        }
+      }
+
       function configureBackend(config) {
         config.site_url = `${window.location.origin}${ADMIN_PATH}`;
         config.backend.base_url = window.location.origin;
@@ -336,6 +347,9 @@
           if (isLocalHost()) {
             config.local_backend = { url: "http://localhost:8081/api/v1" };
           } else {
+            const cmsBranch = await fetchCmsBranch();
+            if (!cmsBranch) throw new Error("branch load failed");
+            config.backend.branch = cmsBranch;
             configureBackend(config);
             clearCmsAuth();
             setStatus("저장소에 연결 중... 잠시만 기다려 주세요.");

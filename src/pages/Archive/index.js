@@ -1,7 +1,13 @@
 import fs from "fs";
 import path from "path";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
+import {
+  MEMBER_FILTERS,
+  getMemberLabels,
+  matchesMemberFilter,
+  normalizeMembers,
+} from "../../lib/members";
 
 
 /* =========================
@@ -34,10 +40,12 @@ export async function getStaticProps() {
     .map(file => {
       const detailPath = path.join(baseDir, file);
       const data = JSON.parse(fs.readFileSync(detailPath, "utf-8"));
+      const members = normalizeMembers(data.members ?? data.member);
 
       return {
         date: data.date,
         title: data.title || titleByDate[data.date] || data.date,
+        members,
         file
       };
     })
@@ -46,9 +54,11 @@ export async function getStaticProps() {
   const detailMap = {};
   for (const item of list) {
     const detailPath = path.join(baseDir, item.file);
-    detailMap[item.date] = JSON.parse(
-      fs.readFileSync(detailPath, "utf-8")
-    );
+    const detail = JSON.parse(fs.readFileSync(detailPath, "utf-8"));
+    detailMap[item.date] = {
+      ...detail,
+      members: normalizeMembers(detail.members ?? detail.member),
+    };
   }
 
   return {
@@ -79,15 +89,46 @@ export default function Archive({ list, detailMap }) {
   const [selectedDate, setSelectedDate] = useState(
     list.length > 0 ? list[0].date : null
   );
+  const [activeMember, setActiveMember] = useState("ALL");
 
   const [videoStart, setVideoStart] = useState(0);
   const [currentSongIndex, setCurrentSongIndex] = useState(null);
   const [toast, setToast] = useState(null);
+  const filteredList = useMemo(
+    () => list.filter(item => matchesMemberFilter(item, activeMember)),
+    [activeMember, list]
+  );
+  const selectedArchive =
+    filteredList.find(item => item.date === selectedDate) ?? filteredList[0];
+  const selectedArchiveDate = selectedArchive?.date ?? null;
 
-  if (!selectedDate) {
+  if (!selectedArchiveDate) {
     return (
       <main className="w-full mx-auto px-8 py-16 text-[#3b1d6a]">
-        <p className="mb-4">아카이브 데이터가 없습니다.</p>
+        <div className="flex flex-wrap gap-2 mb-6">
+          {MEMBER_FILTERS.map(member => {
+            const active = activeMember === member.key;
+            return (
+              <button
+                key={member.key}
+                onClick={() => {
+                  setActiveMember(member.key);
+                  setCurrentSongIndex(null);
+                  setVideoStart(0);
+                }}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition
+                  ${
+                    active
+                      ? "bg-[#3b1d6a] text-white"
+                      : "bg-white text-[#3b1d6a] border border-[#3b1d6a]/30 hover:bg-[#f1ecfb]"
+                  }`}
+              >
+                {member.label}
+              </button>
+            );
+          })}
+        </div>
+        <p className="mb-4">선택한 멤버의 아카이브 데이터가 없습니다.</p>
         <Link
           href="/archive-admin"
           className="text-sm text-[#3b1d6a]/70 hover:text-[#3b1d6a] transition"
@@ -98,7 +139,7 @@ export default function Archive({ list, detailMap }) {
     );
   }
 
-  const detail = detailMap[selectedDate];
+  const detail = detailMap[selectedArchiveDate];
   if (!detail) {
     return (
       <main className="w-full mx-auto px-8 py-16 text-[#3b1d6a]">
@@ -108,6 +149,7 @@ export default function Archive({ list, detailMap }) {
   }
 
   const isYoutube = detail.platform === "youtube";
+  const memberLabels = getMemberLabels(detail);
 
   /* =========================
      노래 클릭 (유튜브만)
@@ -175,6 +217,30 @@ export default function Archive({ list, detailMap }) {
           </div>
         </header>
 
+        <div className="flex flex-wrap gap-2 mb-4 shrink-0">
+          {MEMBER_FILTERS.map(member => {
+            const active = activeMember === member.key;
+            return (
+              <button
+                key={member.key}
+                onClick={() => {
+                  setActiveMember(member.key);
+                  setCurrentSongIndex(null);
+                  setVideoStart(0);
+                }}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition
+                  ${
+                    active
+                      ? "bg-[#3b1d6a] text-white"
+                      : "bg-white text-[#3b1d6a] border border-[#3b1d6a]/30 hover:bg-[#f1ecfb]"
+                  }`}
+              >
+                {member.label}
+              </button>
+            );
+          })}
+        </div>
+
         {/* =========================
             본문 (3단 레이아웃)
           ========================= */}
@@ -183,7 +249,7 @@ export default function Archive({ list, detailMap }) {
           {/* 좌측: 날짜 리스트 (스크롤) */}
           <aside className="w-64 shrink-0 h-full overflow-y-auto pr-2">
             <ul className="space-y-2">
-              {list.map(item => (
+              {filteredList.map(item => (
                 <li
                   key={item.date}
                   onClick={() => {
@@ -193,12 +259,22 @@ export default function Archive({ list, detailMap }) {
                   }}
                   className={`px-4 py-3 rounded-lg cursor-pointer transition
                     ${
-                      selectedDate === item.date
+                      selectedArchiveDate === item.date
                         ? "bg-[#3b1d6a]/20 font-semibold"
                         : "hover:bg-[#3b1d6a]/10"
                     }`}
                 >
-                  {item.title}
+                  <div>{item.title}</div>
+                  <div className="mt-1 flex flex-wrap gap-1">
+                    {getMemberLabels(item).map(label => (
+                      <span
+                        key={label}
+                        className="inline-block px-2 py-0.5 text-[11px] rounded-full bg-[#3b1d6a]/10 text-[#3b1d6a]/70"
+                      >
+                        {label}
+                      </span>
+                    ))}
+                  </div>
                 </li>
               ))}
             </ul>
@@ -226,6 +302,9 @@ export default function Archive({ list, detailMap }) {
               🎵 노래 리스트
               <span className="ml-2 text-sm text-[#3b1d6a]/60">
                 ({detail.songs.length}곡)
+              </span>
+              <span className="ml-2 text-sm text-[#3b1d6a]/60">
+                {memberLabels.join(", ")}
               </span>
               {!isYoutube && (
                 <span className="ml-2 text-sm text-[#3b1d6a]/60">

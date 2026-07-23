@@ -48,6 +48,27 @@ collections:
           - "^[a-z0-9]+(?:-[a-z0-9]+)*$"
           - "URL-safe 문자만 사용하세요 (소문자, 숫자, 하이픈)"
 
+      - label: 멤버
+        name: members
+        widget: list
+        required: true
+        default:
+          - haren
+        min: 1
+        summary: "{{fields.member}}"
+        field:
+          label: 멤버
+          name: member
+          widget: select
+          options:
+            - label: 센 카르멘
+              value: sen
+            - label: 니르
+              value: nir
+            - label: 하렌 루베오스
+              value: haren
+        hint: "함께 부른 곡은 멤버를 여러 명 추가하세요. 기존 파일에 이 값이 없으면 하렌으로 처리됩니다."
+
       - label: 제목
         name: title
         widget: string
