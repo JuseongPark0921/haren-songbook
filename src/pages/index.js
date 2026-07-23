@@ -16,12 +16,19 @@ const GENRES = [
   { key: "뮤지컬/성악", label: "뮤지컬·성악" }
 ];
 
+const MEMBER_CARDS = [
+  { key: "sen", label: "센 카르멘", subtitle: "Sen Carmen Songlist" },
+  { key: "haren", label: "하렌 루베오스", subtitle: "Haren.R Songlist" },
+  { key: "nir", label: "니르", subtitle: "Nir Songlist" },
+];
+
 export async function getStaticProps() {
   const songs = getAllSongs();
   return { props: { songs } };
 }
 
 export default function Home({ songs }) {
+  const [showSongList, setShowSongList] = useState(false);
   const [activeMember, setActiveMember] = useState("ALL");
   const [activeGenre, setActiveGenre] = useState("ALL");
   const [query, setQuery] = useState("");
@@ -57,15 +64,112 @@ export default function Home({ songs }) {
 
 
   const router = useRouter();
+  const selectedMemberLabel =
+    MEMBER_FILTERS.find(member => member.key === activeMember)?.label ??
+    "전체";
+
+  const openMemberSongList = (memberId) => {
+    setActiveMember(memberId);
+    setActiveGenre("ALL");
+    setQuery("");
+    setShowSongList(true);
+  };
 
   const goRandomSong = () => {
-    const randomIndex = Math.floor(Math.random() * songs.length);
-    router.push(`/song/${songs[randomIndex].id}`);
+    const songPool = filtered.length > 0 ? filtered : songs;
+    const randomIndex = Math.floor(Math.random() * songPool.length);
+    router.push(`/song/${songPool[randomIndex].id}`);
   };
+
+  if (!showSongList) {
+    return (
+      <main className="w-full max-w-screen-xl mx-auto px-6 py-16">
+        <header className="relative mb-12 text-center">
+          <h1
+            className="
+              font-serif
+              text-4xl md:text-5xl lg:text-6xl
+              leading-tight
+            "
+          >
+            STATUS Songbook
+          </h1>
+          <p className="text-sm text-[#3b1d6a]/60 mt-4">
+            노래책을 볼 멤버를 선택해 주세요.
+          </p>
+        </header>
+
+        <section className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+          {MEMBER_CARDS.map(member => {
+            const songCount = songs.filter(song =>
+              matchesMemberFilter(song, member.key)
+            ).length;
+
+            return (
+              <button
+                key={member.key}
+                onClick={() => openMemberSongList(member.key)}
+                className="
+                  rounded-3xl
+                  border border-[#3b1d6a]/20
+                  bg-white
+                  px-6 py-10
+                  text-left
+                  shadow-sm
+                  transition
+                  hover:-translate-y-1
+                  hover:bg-[#f7f2ff]
+                  hover:shadow-lg
+                "
+              >
+                <span className="block text-sm font-medium text-[#3b1d6a]/50 mb-3">
+                  {member.subtitle}
+                </span>
+                <span className="block font-serif text-3xl text-[#3b1d6a] mb-4">
+                  {member.label}
+                </span>
+                <span className="inline-block px-3 py-1 text-xs rounded-full bg-[#3b1d6a]/10 text-[#3b1d6a]/70">
+                  {songCount}곡 보기
+                </span>
+              </button>
+            );
+          })}
+        </section>
+
+        <div className="flex flex-wrap justify-center gap-3">
+          <Link
+            href="/Archive"
+            className="px-6 py-3 rounded-full bg-[#3b1d6a]/10 text-[#3b1d6a] text-sm font-medium hover:bg-[#3b1d6a]/20 transition"
+          >
+            노래방 아카이브
+          </Link>
+          <Link
+            href="/admin"
+            className="px-6 py-3 rounded-full bg-[#3b1d6a]/10 text-[#3b1d6a] text-sm font-medium hover:bg-[#3b1d6a]/20 transition"
+          >
+            곡 관리
+          </Link>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="w-full max-w-screen-xl mx-auto px-6 py-16">
-      <div className="flex items-center justify-end gap-4 mb-4">
+      <div className="flex items-center justify-between gap-4 mb-4">
+        <button
+          onClick={() => setShowSongList(false)}
+          className="
+            inline-flex items-center gap-2
+            px-4 py-2 rounded-full
+            text-sm font-medium
+            bg-[#3b1d6a]/10 text-[#3b1d6a]
+            hover:bg-[#3b1d6a]/20
+            transition
+          "
+        >
+          ← 멤버 선택
+        </button>
         <Link
           href="/admin"
           className="
@@ -90,7 +194,7 @@ export default function Home({ songs }) {
             leading-tight
           "
         >
-          Haren.R Songlist
+          {activeMember === "haren" ? "Haren.R Songlist" : `${selectedMemberLabel} Songlist`}
         </h1>
 
         {/* 채널 링크 */}
